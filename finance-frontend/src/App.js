@@ -51,7 +51,7 @@ function App() {
 
     return  (
       <div className="App">
-        <h1> UMN Student Finance Dashbaord {dates}</h1>
+        <h1> UMN Student Finance Dashboard {dates}</h1>
          <ExpenseList expenses={expenses} total = {total}/>
          <h2>Total Spending: ${total.toFixed(2)}</h2>
          <AvMonSpend expenses={expenses} total = {total}/>
