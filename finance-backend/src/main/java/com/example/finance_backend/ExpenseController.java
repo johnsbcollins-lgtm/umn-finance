@@ -7,7 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 //holds and manages data
-@CrossOrigin(origins = {"http://localhost:3000", "https://umn-finance.vercel.app"})
+//"http://localhost:3000", "https://umn-finance.vercel.app"
+@CrossOrigin(origins = {"*"})
 
 @RestController
 @RequestMapping("/expenses")
