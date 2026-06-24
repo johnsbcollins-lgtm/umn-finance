@@ -23,6 +23,7 @@ function App() {
         .then(data => setDates(data))
     }, []);
 
+    console.log("API :" + API_URL)
     function reloadUpload() {
       fetch(`${API_URL}/expenses`)
         .then(response => response.json())
