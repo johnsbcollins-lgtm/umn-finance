@@ -57,7 +57,4 @@ function App() {
          <AvMonSpend expenses={expenses} total = {total}/>
          <UploadCsv onUpload={reloadUpload}/>
          <button onClick={clearDatabase}>Clear All Expenses</button>
-        </div>
-    );
-  }
-  export default App;
+        </div
