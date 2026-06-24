@@ -6,7 +6,7 @@ function AvMonSpend({ expenses, total}) {
 
 
     useEffect(() => {
-        fetch('http://localhost:8081/expenses/search?store=Months')
+        fetch(`${API_URL}/expenses/search?store=Months`)
             .then(response => response.json())
             .then(data => {
                 setMonths(data.amount);

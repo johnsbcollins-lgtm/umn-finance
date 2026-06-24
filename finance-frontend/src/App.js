@@ -3,6 +3,7 @@ import './App.css';
 import ExpenseList from './ExpenseList';
 import UploadCsv from './UploadCsv';
 import AvMonSpend from './AvMonSpend'
+import API_URL from './config';
 
 function App() {
 
@@ -14,19 +15,19 @@ function App() {
     //response is parsed to JSON
     //and put in expenses
   useEffect(() => {
-      fetch('http://localhost:8081/expenses')
+      fetch(`${API_URL}/expenses`)
         .then(response => response.json())
         .then(data => setExpenses(data));
-      fetch('http://localhost:8081/expenses/date')
+      fetch(`${API_URL}/expenses/date`)
         .then(response => response.text())
         .then(data => setDates(data))
     }, []);
 
     function reloadUpload() {
-      fetch('http://localhost:8081/expenses')
+      fetch(`${API_URL}/expenses`)
         .then(response => response.json())
         .then(data => setExpenses(data));
-      fetch('http://localhost:8081/expenses/date')
+      fetch(`${API_URL}/expenses/date`)
           .then(response => response.text())
           .then(data => setDates(data));
     }
@@ -37,7 +38,7 @@ function App() {
     const total = expenses.slice(2).reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
 
     function clearDatabase() {
-    fetch('http://localhost:8081/expenses/all', {
+    fetch(`${API_URL}/expenses/all`, {
         method: 'DELETE'
     })
     .then(response => response.text())
