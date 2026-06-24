@@ -1,14 +1,15 @@
 package com.example.finance_backend;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-//holds and manages data
-//"http://localhost:3000", "https://umn-finance.vercel.app"
-@CrossOrigin(origins = {"*"})
 
 @RestController
 @RequestMapping("/expenses")
