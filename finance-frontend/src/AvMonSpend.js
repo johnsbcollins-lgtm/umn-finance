@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-API_URL from './config';
+import API_URL from './config';
 
 function AvMonSpend({ expenses, total}) {
 

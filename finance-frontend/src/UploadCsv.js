@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_URL from './config';
 
 function UploadCsv({ onUpload }){
     const [file, setFile] = useState(null);
@@ -11,7 +12,7 @@ function UploadCsv({ onUpload }){
         const formData = new FormData();
         formData.append('file', file);
 
-    fetch('http://localhost:8081/expenses/upload', {
+    fetch(`${API_URL}/expenses/upload`, {
         method: 'POST',
         body: formData
     })
