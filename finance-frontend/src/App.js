@@ -1,0 +1,61 @@
+import React,{ useState, useEffect } from 'react'; 
+import './App.css';
+import ExpenseList from './ExpenseList';
+import UploadCsv from './UploadCsv';
+import AvMonSpend from './AvMonSpend'
+
+function App() {
+
+  //expenses is the variable, setExpenses modifies it
+  const [expenses, setExpenses] = useState([]);
+  const [dates, setDates] = useState('')
+  //useEffect does stuff outside of rendering
+    //fetch talks to the backend to get expenses
+    //response is parsed to JSON
+    //and put in expenses
+  useEffect(() => {
+      fetch('http://localhost:8081/expenses')
+        .then(response => response.json())
+        .then(data => setExpenses(data));
+      fetch('http://localhost:8081/expenses/date')
+        .then(response => response.text())
+        .then(data => setDates(data))
+    }, []);
+
+    function reloadUpload() {
+      fetch('http://localhost:8081/expenses')
+        .then(response => response.json())
+        .then(data => setExpenses(data));
+      fetch('http://localhost:8081/expenses/date')
+          .then(response => response.text())
+          .then(data => setDates(data));
+    }
+
+    useEffect(() => {
+      reloadUpload();
+    }, []);
+    const total = expenses.slice(2).reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+
+    function clearDatabase() {
+    fetch('http://localhost:8081/expenses/all', {
+        method: 'DELETE'
+    })
+    .then(response => response.text())
+    .then(message => {alert(message); reloadUpload();})
+    .catch(error => console.error(error));
+  }
+    
+
+
+    return  (
+      <div className="App">
+        <h1> UMN Student Finance Dashbaord {dates}</h1>
+         <ExpenseList expenses={expenses} total = {total}/>
+         <h2>Total Spending: ${total.toFixed(2)}</h2>
+         <AvMonSpend expenses={expenses} total = {total}/>
+         <UploadCsv onUpload={reloadUpload}/>
+         <button onClick={clearDatabase}>Clear All Expenses</button>
+        </div>
+    );
+  }
+  export default App;
