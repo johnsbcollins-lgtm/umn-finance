@@ -22,7 +22,7 @@ public class CorsConfig {
                                 "http://localhost:3000"
                         )
                         .allowedMethods("*")
-                        .allowedHeaders("*");
+                        .allowedHeaders("*")
                         .allowCredentials(true);
             }
         };
