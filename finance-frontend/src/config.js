@@ -1,7 +1,7 @@
-export const API_URL = 'http://umn-finance-production.up.railway.app'
+export const API_URL = 'https://umn-finance-production.up.railway.app'
 /*
 const localUrl ='http://localhost:8081'
- apiUrl = 'umn-finance-production.up.railway.app'
+ apiUrl = 'https://umn-finance-production.up.railway.app'
 */
 export function authHeaders() {
     return {
