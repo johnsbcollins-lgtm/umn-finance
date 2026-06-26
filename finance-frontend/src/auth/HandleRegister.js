@@ -20,7 +20,10 @@ function HandleRegister(){
             return response.json();
         })
         .then(data => {localStorage.setItem('token', data.token)})
-        .then(navigate('/dashboard'))
+        .then(() => {
+                console.log(localStorage.getItem('token'));
+                navigate('/dashboard');
+            })
         .catch(error => {console.error(error);});
     }
     return(
