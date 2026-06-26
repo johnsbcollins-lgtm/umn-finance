@@ -19,7 +19,7 @@ public class Expense {
     private double amount;
 
     @ManyToOne
-    private Long ownerId;
+    private User owner;
 
     public Expense(){}
 
@@ -28,20 +28,20 @@ public class Expense {
         this.amount = amount;
     }
 
-    public Expense(String store, double amount, Long ownerId) {
+    public Expense(String store, double amount, User owner) {
         this.store = store;
         this.amount = amount;
-        this.ownerId = ownerId;
+        this.owner = owner;
     }
     //getters
     public Long getId() { return id;}
     public String getStore() { return store;}
     public double getAmount() {return amount;}
-    public Long getOwnerId() { return ownerId;}
+    public User getOwner() { return owner;}
 
     public void setId(Long id) { this.id = id; }
     public void setStore(String store) { this.store = store; }
     public void setAmount(double amount) { this.amount = amount; }
-    public void setOwner(Long ownerId) { this.ownerId = ownerId; }
+    public void setOwner(User owner) { this.owner = owner; }
 
     }

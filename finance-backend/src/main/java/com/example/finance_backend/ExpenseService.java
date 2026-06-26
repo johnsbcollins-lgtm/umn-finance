@@ -27,13 +27,13 @@ public class ExpenseService {
     }
 
     public List<Expense> getExpenses(String email) {
-        Long ownerId = getOwner(email).getID();
-        return expenseRepository.findAllByOwnerId(ownerId);
+        User owner = getOwner(email);
+        return expenseRepository.findAllByOwner(owner);
     }
 
 
     public void parseAndSaveCSV(MultipartFile file, String email) throws Exception{
-        Long ownerId = getOwner(email).getID();
+        User owner = getOwner(email);
         long daysBetween  = 1;
         double kkSpending = 0, salsSpending = 0, blarnesSpending = 0, topSpending = 0, royalSpending = 0,
                 chipotle = 0, mcDonalds = 0, venmo = 0, genAmount = 0, uber = 0, doordash = 0;
@@ -93,18 +93,18 @@ public class ExpenseService {
         LocalDate date2 = LocalDate.parse(dayFinal, formatter);
         daysBetween = ChronoUnit.DAYS.between(date1, date2);
         long months = Math.abs(daysBetween/30);
-        expenseRepository.save(new Expense("Months", months, ownerId));
-        expenseRepository.save(new Expense(date, 0, ownerId));
-        expenseRepository.save(new Expense("KKs", kkSpending, ownerId));
-        expenseRepository.save(new Expense("Sals", salsSpending, ownerId));
-        expenseRepository.save(new Expense("Blarnes", blarnesSpending, ownerId));
-        expenseRepository.save(new Expense("Royal", royalSpending, ownerId));
-        expenseRepository.save(new Expense("TopTen", topSpending, ownerId));
-        expenseRepository.save(new Expense("Chiptole", chipotle, ownerId));
-        expenseRepository.save(new Expense("McDonalds", mcDonalds, ownerId));
-        expenseRepository.save(new Expense("Doordash", doordash, ownerId));
-        expenseRepository.save(new Expense("Uber", uber, ownerId));
-        expenseRepository.save(new Expense("Other", genAmount + venmo, ownerId));
+        expenseRepository.save(new Expense("Months", months, owner));
+        expenseRepository.save(new Expense(date, 0, owner));
+        expenseRepository.save(new Expense("KKs", kkSpending, owner));
+        expenseRepository.save(new Expense("Sals", salsSpending, owner));
+        expenseRepository.save(new Expense("Blarnes", blarnesSpending, owner));
+        expenseRepository.save(new Expense("Royal", royalSpending, owner));
+        expenseRepository.save(new Expense("TopTen", topSpending, owner));
+        expenseRepository.save(new Expense("Chiptole", chipotle, owner));
+        expenseRepository.save(new Expense("McDonalds", mcDonalds, owner));
+        expenseRepository.save(new Expense("Doordash", doordash, owner));
+        expenseRepository.save(new Expense("Uber", uber, owner));
+        expenseRepository.save(new Expense("Other", genAmount + venmo, owner));
 
 
         csvReader.close();
@@ -112,19 +112,19 @@ public class ExpenseService {
 
 
     public Expense getExpensesByStore(String store, String email) {
-        Long ownerId = getOwner(email).getID();
-        return expenseRepository.findFirstByStoreAndOwnerId(store, ownerId);
+        User owner = getOwner(email);
+        return expenseRepository.findFirstByStoreAndOwner(store, owner);
     }
 
     @Transactional
     public void deleteAllExpenses(String email) {
-        Long ownerId = getOwner(email).getID();
+        User owner = getOwner(email);
         System.out.println("ExpenseService1");
-        expenseRepository.deleteAllByOwnerId(ownerId);
+        expenseRepository.deleteAllByOwner(owner);
     }
     public String getDate(String email){
-        Long ownerId = getOwner(email).getID();
-        Expense dateExpense = expenseRepository.findFirstByStoreContainingAndOwnerId("to", ownerId);
+        User owner = getOwner(email);
+        Expense dateExpense = expenseRepository.findFirstByStoreContainingAndOwner("to", owner);
         if(dateExpense == null)
             return "";
         else
