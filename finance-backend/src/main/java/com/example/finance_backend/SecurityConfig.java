@@ -14,36 +14,27 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 public class SecurityConfig {
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(
-                HttpSecurity http, @Value("${jwt.secret}") String secret)
-            throws Exception {
-            SecretKeySpec secretKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
-            //need this to verify/create jwt stuff
-            http
-                    .csrf(csrf -> csrf.disable())
-                    //no cookies etc so this is fine
-                    .sessionManagement(session ->
-                            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                            //tells spring security not to create a session
-                    )
-                    .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/auth/**").permitAll() //any /auth is good
-                            .anyRequest().authenticated() //eveyrthing else dids authentication
-                    )
-                    //configures app as OAuth2 resource server
-                    //this helps verify JWT tokens
-                    .oauth2ResourceServer(oauth2 ->
-                            oauth2.jwt(jwt ->
-                                    jwt.decoder(NimbusJwtDecoder.withSecretKey(secretKey).build())
-                                    //creates decoder for JWT tokens
-                                    //withSecretKey says only trust THIS secretKey
-                            )
-                    );
-            //finally sets SecurityFilterChain that gives Spring a security system
-            //it can enforce on every request
-            return http.build();
-        }
+    private final JwtFilter jwtFilter;
+
+    public SecurityConfig(JwtFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
