@@ -19,7 +19,8 @@ public class CorsConfig {
                                 "https://www.gopherbudget.com",
                                 "https://gopherbudget.com",
                                 "https://umn-finance-md5rd0301-jack-coll.vercel.app",
-                                "http://localhost:3000"
+                                "http://localhost:3000",
+                                "http://localhost:8081"
                         )
                         .allowedMethods("*")
                         .allowedHeaders("*")

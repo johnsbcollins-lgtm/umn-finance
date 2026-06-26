@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
 @Service
 public class ExpenseService {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -25,13 +27,13 @@ public class ExpenseService {
     }
 
     public List<Expense> getExpenses(String email) {
-        User owner = getOwner(email);
-        return expenseRepository.findAllByOwner(owner);
+        Long ownerId = getOwner(email).getID();
+        return expenseRepository.findAllByOwnerId(ownerId);
     }
 
 
     public void parseAndSaveCSV(MultipartFile file, String email) throws Exception{
-        User owner = getOwner(email);
+        Long ownerId = getOwner(email).getID();
         long daysBetween  = 1;
         double kkSpending = 0, salsSpending = 0, blarnesSpending = 0, topSpending = 0, royalSpending = 0,
                 chipotle = 0, mcDonalds = 0, venmo = 0, genAmount = 0, uber = 0, doordash = 0;
@@ -91,18 +93,18 @@ public class ExpenseService {
         LocalDate date2 = LocalDate.parse(dayFinal, formatter);
         daysBetween = ChronoUnit.DAYS.between(date1, date2);
         long months = Math.abs(daysBetween/30);
-        expenseRepository.save(new Expense("Months", months, owner));
-        expenseRepository.save(new Expense(date, 0, owner));
-        expenseRepository.save(new Expense("KKs", kkSpending, owner));
-        expenseRepository.save(new Expense("Sals", salsSpending, owner));
-        expenseRepository.save(new Expense("Blarnes", blarnesSpending, owner));
-        expenseRepository.save(new Expense("Royal", royalSpending, owner));
-        expenseRepository.save(new Expense("TopTen", topSpending, owner));
-        expenseRepository.save(new Expense("Chiptole", chipotle, owner));
-        expenseRepository.save(new Expense("McDonalds", mcDonalds, owner));
-        expenseRepository.save(new Expense("Doordash", doordash, owner));
-        expenseRepository.save(new Expense("Uber", uber, owner));
-        expenseRepository.save(new Expense("Other", genAmount + venmo, owner));
+        expenseRepository.save(new Expense("Months", months, ownerId));
+        expenseRepository.save(new Expense(date, 0, ownerId));
+        expenseRepository.save(new Expense("KKs", kkSpending, ownerId));
+        expenseRepository.save(new Expense("Sals", salsSpending, ownerId));
+        expenseRepository.save(new Expense("Blarnes", blarnesSpending, ownerId));
+        expenseRepository.save(new Expense("Royal", royalSpending, ownerId));
+        expenseRepository.save(new Expense("TopTen", topSpending, ownerId));
+        expenseRepository.save(new Expense("Chiptole", chipotle, ownerId));
+        expenseRepository.save(new Expense("McDonalds", mcDonalds, ownerId));
+        expenseRepository.save(new Expense("Doordash", doordash, ownerId));
+        expenseRepository.save(new Expense("Uber", uber, ownerId));
+        expenseRepository.save(new Expense("Other", genAmount + venmo, ownerId));
 
 
         csvReader.close();
@@ -110,20 +112,19 @@ public class ExpenseService {
 
 
     public Expense getExpensesByStore(String store, String email) {
-        User owner = getOwner(email);
-        return expenseRepository.findFirstByStoreAndOwner(store, owner);
+        Long ownerId = getOwner(email).getID();
+        return expenseRepository.findFirstByStoreAndOwnerId(store, ownerId);
     }
 
     @Transactional
     public void deleteAllExpenses(String email) {
-        User owner = getOwner(email);
+        Long ownerId = getOwner(email).getID();
         System.out.println("ExpenseService1");
-        System.out.println(owner.getEmail());
-        expenseRepository.deleteAllByOwner(owner);
+        expenseRepository.deleteAllByOwnerId(ownerId);
     }
     public String getDate(String email){
-        User owner = getOwner(email);
-        Expense dateExpense = expenseRepository.findFirstByStoreContainingAndOwner("to", owner);
+        Long ownerId = getOwner(email).getID();
+        Expense dateExpense = expenseRepository.findFirstByStoreContainingAndOwnerId("to", ownerId);
         if(dateExpense == null)
             return "";
         else

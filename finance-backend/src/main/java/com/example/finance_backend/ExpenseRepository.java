@@ -8,9 +8,9 @@ import java.util.List;
 //jpa takes care of making all the methods for me
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long>{
-    List<Expense> findAllByOwner(User owner);
-    Expense findFirstByStoreAndOwner(String store, User owner);
-    Expense findFirstByStoreContainingAndOwner(String keyword, User owner);
-    void deleteAllByOwner(User owner);
+    List<Expense> findAllByOwnerId(Long ownerId);
+    Expense findFirstByStoreAndOwnerId(String store, Long ownerId);
+    Expense findFirstByStoreContainingAndOwnerId(String keyword, Long ownerId);
+    void deleteAllByOwnerId(Long ownerId);
 }
 
