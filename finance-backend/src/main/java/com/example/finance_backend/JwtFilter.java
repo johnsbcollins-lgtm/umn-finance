@@ -1,3 +1,17 @@
+package com.example.finance_backend;
+
+import io.jsonwebtoken.Jwts;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.crypto.spec.SecretKeySpec;
+import java.io.IOException;
+
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
