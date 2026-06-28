@@ -13,10 +13,12 @@ function HandleRegister(){
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({email, password})
         })
-        .then(response =>{
+        .then(response => {
+            console.log("Status:", response.status);
+            console.log("Ok:", response.ok);
             if(!response.ok){
-                throw new Error("Already Registered");
-            }
+                throw new Error(`Failed with status: ${response.status}`);
+        }
             return response.json();
         })
         .then(data => {localStorage.setItem('token', data.token)})
