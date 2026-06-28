@@ -1,9 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate} from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./auth/HomePage";
 import Dashboard from "./dash/Dashboard";
 import LoginPage from "./auth/LoginPage";
 import RegisterPage from "./auth/RegisterPage";
 function App(){
+
   return (
     <BrowserRouter>
       <Routes>

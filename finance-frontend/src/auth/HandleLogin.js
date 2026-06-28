@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import API_URL from '../config';
+import { API_URL } from '../config';
 
 function HandleLogin(){
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ function HandleLogin(){
             return response.json();
         })
         .then(data => {localStorage.setItem('token', data.token)})
-        .then(navigate('/dashboard'))
+        .then(() => navigate('/dashboard'))
         .catch(error => {console.error(error);});
     }
 
