@@ -7,7 +7,6 @@ function App(){
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/auth" replace/>} />
         <Route path="/auth" element={<HomePage/>} />
         <Route path="/auth/login" element={<LoginPage/>} />
         <Route path="/auth/register" element={<RegisterPage/>} />
