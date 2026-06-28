@@ -1,12 +1,7 @@
 package com.example.finance_backend;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -14,7 +9,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
     @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
     private Long id;
-    
+
     private String email;
     private String password;
 

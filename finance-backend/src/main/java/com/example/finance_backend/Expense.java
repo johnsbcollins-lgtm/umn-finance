@@ -1,9 +1,6 @@
 package com.example.finance_backend;
 
 import jakarta.persistence.*;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.SequenceGenerator;
 
 
 //tells JPA this class maps to a database table
@@ -19,6 +16,7 @@ public class Expense {
     private double amount;
 
     @ManyToOne
+    @JoinColumn(name = "owner_id")
     private User owner;
 
     public Expense(){}
