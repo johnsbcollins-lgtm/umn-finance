@@ -8,7 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
+import io.jsonwebtoken.Claims;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import java.util.ArrayList;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 
@@ -40,11 +43,19 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             String token = authHeader.substring(7);
             SecretKeySpec secretKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
-            // verify token
-            Jwts.parserBuilder()
+
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
-                    .parseClaimsJws(token);
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            // ADD THIS - set authentication in security context
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            claims.getSubject(), null, new ArrayList<>()
+                    );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
             chain.doFilter(request, response);
         } catch (Exception e) {
