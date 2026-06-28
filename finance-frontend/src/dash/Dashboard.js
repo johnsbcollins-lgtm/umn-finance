@@ -15,6 +15,7 @@ function Dashboard(){
     //response is parsed to JSON
     //and put in expenses
   useEffect(() => {
+      console.log("Token:", localStorage.getItem('token'));
       fetch(`${API_URL}/expenses`,{
           headers: authHeaders()
       })
