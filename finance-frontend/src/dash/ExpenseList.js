@@ -17,9 +17,9 @@ function ExpenseList({ expenses, total }) {
     .map(expense => (
         <div key={expense.id}>
             <p>{expense.store} : ${expense.amount.toFixed(2)} - {(expense.amount/total * 
-              100).toFixed(2)}% of total - Number of Purchases: {expense.numPurchases
-              } - Average Expense per Purchase: ${expense.amount 
-              / expense.numPurchases.toFixed(2) || 0}</p>
+              100).toFixed(2)}% of total - # of Purchases: {expense.numPurchases
+              } - Avg. Expense: ${(expense.amount 
+              / expense.numPurchases).toFixed(2) || 0}</p>
         </div>
     ))
       }
