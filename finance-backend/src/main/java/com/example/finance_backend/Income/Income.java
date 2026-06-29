@@ -38,7 +38,9 @@ public class Income {
     public String getStore() { return store;}
     public double getAmount() {return amount;}
     public User getOwner() { return owner;}
+    public int getNumDeposits() {return numDeposits;}
 
+    public void setNumDeposits(int numDeposits) {this.numDeposits = numDeposits;}
     public void setId(Long id) { this.id = id; }
     public void setStore(String store) { this.store = store; }
     public void setAmount(double amount) { this.amount = amount; }
