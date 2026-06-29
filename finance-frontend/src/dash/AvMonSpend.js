@@ -14,10 +14,10 @@ function AvMonSpend({ expenses, total}) {
             .then(response => response.json())
             .then(data => {
                 setMonths(data.amount);
+                console.log("Months: ", data.amount);
             })
             .catch(error => console.error(error));
-            console.log("Months: ", months);
-    }, []);
+    }, [months]);
         
     return (
         <div>
