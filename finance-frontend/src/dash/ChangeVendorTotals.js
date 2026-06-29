@@ -4,7 +4,17 @@ import { authHeaders } from '../config';
 
 function ChangeVendorTotals(){
     const [amount, setAmount] = useState('');
-    const [vendor, setVendor] = useState('');
+    const [vendor, setVendor] = useState('Other');
+    const vendors = [{value: 'KKs', label: 'KKs'}, 
+        {value: 'Sals', label: 'Sals'}, 
+        {value: 'Blarnes', label: 'Blarnes'}, 
+        {value: 'Royal', label: 'Royal'}, 
+        {value: 'TopTen', label: 'TopTen'}, 
+        {value: 'Chipotle', label: 'Chipotle'}, 
+        {value: 'McDonald’s', label: 'McDonald’s'}, 
+        {value: 'DoorDash', label: 'DoorDash'}, 
+        {value: 'Uber', label: 'Uber'}, 
+        {value: 'Other', label: 'Other'}];
     const [type, setType] = useState('positive');
 
     function handleChange() {
@@ -20,13 +30,16 @@ function ChangeVendorTotals(){
     return(
         <div>
             <h2>Change Vendor Totals</h2>
-            <input
-                type="text"
-                placeholder="Vendor"
-                value={vendor}
-                onChange={(e) => setVendor(e.target.value)}
-            />
+            <select value={vendor} onChange={(e) => setVendor(e.target.value)}>
+                 <option value="" disabled>Select a Vendor</option>
+                {vendors.map((vndr) => (
+                    <option key={vndr.value} value={vndr.value}>
+                        {vndr.label}
+                    </option>
+                ))}
+            </select>
             <select value={type} onChange={(e) => setType(e.target.value)}>
+                 <option value="" disabled>Select a type</option>
                 <option value="positive">Positive Change</option>
                 <option value="negative">Negative Change</option>
             </select>

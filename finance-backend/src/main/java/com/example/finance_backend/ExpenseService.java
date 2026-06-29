@@ -100,9 +100,9 @@ public class ExpenseService {
         expenseRepository.save(new Expense("Blarnes", blarnesSpending, owner));
         expenseRepository.save(new Expense("Royal", royalSpending, owner));
         expenseRepository.save(new Expense("TopTen", topSpending, owner));
-        expenseRepository.save(new Expense("Chiptole", chipotle, owner));
-        expenseRepository.save(new Expense("McDonalds", mcDonalds, owner));
-        expenseRepository.save(new Expense("Doordash", doordash, owner));
+        expenseRepository.save(new Expense("Chipotle", chipotle, owner));
+        expenseRepository.save(new Expense("McDonald's", mcDonalds, owner));
+        expenseRepository.save(new Expense("DoorDash", doordash, owner));
         expenseRepository.save(new Expense("Uber", uber, owner));
         expenseRepository.save(new Expense("Other", genAmount + venmo, owner));
 
