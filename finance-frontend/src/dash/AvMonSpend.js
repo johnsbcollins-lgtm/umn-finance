@@ -16,6 +16,7 @@ function AvMonSpend({ expenses, total}) {
                 setMonths(data.amount);
             })
             .catch(error => console.error(error));
+            console.log("Months: ", months);
     }, []);
         
     return (

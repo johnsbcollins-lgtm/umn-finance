@@ -1,6 +1,7 @@
 import React from 'react';
 function ExpenseList({ expenses, total }) {
-
+  const storeOrder = ['KKs', 'Sals', 'Blarnes', 'Royal', 'TopTen', 'Chipotle', "McDonald’s", 
+      'DoorDash', 'Uber', 'Other'];
   return (
     //header(<h2>)
     //curly braces means run javascript
@@ -11,11 +12,14 @@ function ExpenseList({ expenses, total }) {
     //use the id comes from SQL database
     <div>
       <h2>Expenses</h2>
-      {expenses.map(expense => (
+      {expenses
+    .sort((a, b) => storeOrder.indexOf(a.store) - storeOrder.indexOf(b.store))
+    .map(expense => (
         <div key={expense.id}>
-          <p>{expense.store} - ${expense.amount.toFixed(2)} - {(expense.amount/total *100).toFixed(2)}% of total</p>
+            <p>{expense.store} - ${expense.amount.toFixed(2)} - {(expense.amount/total * 100).toFixed(2)}% of total</p>
         </div>
-      ))}
+    ))
+}
     </div>
   );
 
