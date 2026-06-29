@@ -67,15 +67,21 @@ public class UserService {
                 Map.entry("Royal", new StoreData("ROYAL")),
                 Map.entry("TopTen", new StoreData("LIQUOR")),
                 Map.entry("Uber", new StoreData("UBER")),
-                Map.entry("Chipotle", new StoreData("CHIPOTLE")),
-                Map.entry("DoorDash", new StoreData("DOORDASH")),
-                Map.entry("McDonald's", new StoreData("MCDONALDS")),
+                Map.entry("Chipotle", new StoreData("CHIPOTLE", "food")),
+                Map.entry("DoorDash", new StoreData("DOORDASH", "food")),
+                Map.entry("McDonald's", new StoreData("MCDONALDS", "food")),
                 Map.entry("Payroll", new StoreData("PAYROLL")),
                 Map.entry("Account Transfer", new StoreData("ONLINE TRANSFER")),
                 Map.entry("Zelle", new StoreData("ZELLE")),
                 Map.entry("Lineleap", new StoreData("LINELEAP")),
                 Map.entry("Subscriptions", new StoreData("RECURRING")),
-                Map.entry("Vending Machines", new StoreData("CANTEEN"))
+                Map.entry("Vending Machines", new StoreData("CANTEEN")),
+                Map.entry("Target", new StoreData("TARGET")),
+                Map.entry("Sals", new StoreData("SALLYS")),
+                Map.entry("Canes", new StoreData("CANES", "food")),
+                Map.entry("Qdoba", new StoreData("QDOBA", "food")),
+                Map.entry("DP Dough", new StoreData("DP DOUGH", "food")),
+                Map.entry("Starbucks", new StoreData("STARBUCKS", "food"))
         );
 
         CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()));
@@ -118,11 +124,13 @@ public class UserService {
             }
             if(otherCheck) {
                 if (amount < 0) {
+                    System.out.println("Description: " + row[descIdx] + " Amount: " + row[amountIdx] + "");
                     amount = amount * -1;
                     other.setExpenses(other.getExpenses() + amount);
                     other.setNumPurchases(other.getNumPurchases() + 1);
                 }
                 else{
+                    System.out.println("Description: " + row[descIdx] + " Amount: " + row[amountIdx] + "");
                     other.setIncome(other.getIncome() + amount);
                     other.setNumDeposits(other.getNumDeposits() + 1);
                 }
@@ -133,9 +141,20 @@ public class UserService {
         LocalDate date2 = LocalDate.parse(dayFinal, formatter);
         daysBetween = ChronoUnit.DAYS.between(date1, date2);
         long months = Math.abs(daysBetween/30);
+        expenseRepository.save(new Expense("Fast Food", 0, owner, 0));
         for(Map.Entry<String, StoreData> entry : storeDataMap.entrySet()){
-            expenseRepository.save(new Expense(entry.getKey(), entry.getValue().getExpenses(), owner, entry.getValue().getNumPurchases()));
-            incomeRepository.save(new Income(entry.getKey(), entry.getValue().getIncome(), owner, entry.getValue().getNumDeposits()));
+            if(entry.getValue().getCategory().equals("food")) {
+                Expense expense = expenseRepository.findFirstByStoreAndOwner("Fast Food", owner);
+                expense.setAmount(expense.getAmount() + entry.getValue().getExpenses());
+                expense.setNumPurchases(expense.getNumPurchases() + entry.getValue().getNumPurchases());
+                expenseRepository.save(expense);
+            }
+            else{
+                expenseRepository.save(new Expense(entry.getKey(), entry.getValue().getExpenses(),
+                        owner, entry.getValue().getNumPurchases()));
+                incomeRepository.save(new Income(entry.getKey(), entry.getValue().getIncome(),
+                        owner, entry.getValue().getNumDeposits()));
+            }
         }
         expenseRepository.save(new Expense("Other", other.getExpenses(), owner, other.getNumPurchases()));
         incomeRepository.save(new Income("Other", other.getIncome(), owner, other.getNumDeposits()));
