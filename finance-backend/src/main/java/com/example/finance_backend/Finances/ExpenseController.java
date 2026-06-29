@@ -32,7 +32,7 @@ public class ExpenseController {
     @PostMapping("/change-vendor-totals")
     public ResponseEntity<String> changeVendorTotals(@RequestBody ChangeVendorRequest request, Authentication auth) {
         expenseService.changeVendorTotals(request.vendor(), request.type(), request.amount(), auth.getName());
-        return ResponseEntity.ok("Vendor totals updated");
+        return ResponseEntity.ok("Expense totals updated");
     }
 
     @GetMapping("/search")

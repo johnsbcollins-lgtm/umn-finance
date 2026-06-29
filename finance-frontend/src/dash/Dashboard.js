@@ -6,7 +6,7 @@ import AvMonSpend from './AvMonSpend'
 import API_URL from '../config';
 import { authHeaders } from '../config';
 import { authHeadersForFormData } from '../config';
-import ChangeVendorTotals from './ChangeVendorTotals';
+import ChangeExpenseTotals from './ChangeExpenseTotals';
 import IncomeList from './IncomeList';
 function Dashboard(){
 const [expenses, setExpenses] = useState([]);
@@ -50,7 +50,7 @@ useEffect(() => {
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
 
-    function clearDatabase() {
+    function clearExpenses() {
     fetch(`${API_URL}/expenses/all`, {
         method: 'DELETE',
         headers: authHeadersForFormData()
@@ -58,22 +58,44 @@ useEffect(() => {
     .then(response => response.text())
     .then(message => {alert(message); fetchData();})
     .catch(error => console.error(error));
-  }
-  const total = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+    }
+    function clearIncome() {
+    fetch(`${API_URL}/income/all`, {
+        method: 'DELETE',
+        headers: authHeadersForFormData()
+    })
+    .then(response => response.text())
+    .then(message => {alert(message); fetchData();})
+    .catch(error => console.error(error));
+    }
+  const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+  const totalIncome = income.reduce((sum, income) => sum + parseFloat(income.amount), 0);
 
 
     return  (
       <div className="Dashboard">
         <h1> UMN Student Finance Dashboard {dates}</h1>
+
          <div className="lists-container">
-            <ExpenseList expenses={expenses} total={total}/>
-            <IncomeList income={income} total={total}/>
+            <ExpenseList expenses={expenses} total={totalExpense}/>
+            <IncomeList income={income} total={totalIncome}/>
         </div>
-         <h2>Total Spending: ${total.toFixed(2)}</h2>
-         <AvMonSpend total={total} months={months}/>
+
+         <div className="totals-container">
+            <h2>Total Spending: ${totalExpense.toFixed(2)}</h2>
+            <h2>Total Income: ${totalIncome.toFixed(2)}</h2>
+         </div>
+
+         <AvMonSpend total={totalExpense} months={months}/>
+
          <UploadCsv onUpload={fetchData}/>
-         <ChangeVendorTotals />
-         <button onClick={clearDatabase}>Clear All Expenses</button>
+
+         <ChangeExpenseTotals/>
+
+         <div className="delete-container">
+              <button onClick={clearExpenses}>Clear All Expenses</button>
+              <button onClick={clearIncome}>Clear All Income</button>
+         </div>
         </div>
     );
   }

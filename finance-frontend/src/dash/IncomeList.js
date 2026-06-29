@@ -1,6 +1,8 @@
 function IncomeList({ income, total }) {
   const storeOrder = ['KKs', 'Sals', 'Blarnes', 'Royal', 'TopTen', 'Chipotle', "McDonald’s", 
       'DoorDash', 'Uber', 'Other'];
+      if(total === 0)
+        total = 0;
       return(
       <div>
       <h2>Income</h2>

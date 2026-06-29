@@ -2,7 +2,7 @@ import React, { useState} from 'react';
 import API_URL from '../config';
 import { authHeaders } from '../config';
 
-function ChangeVendorTotals(){
+function ChangeExpenseTotals(){
     const [amount, setAmount] = useState('');
     const [vendor, setVendor] = useState('Other');
     const vendors = [{value: 'KKs', label: 'KKs'}, 
@@ -29,7 +29,7 @@ function ChangeVendorTotals(){
     }
     return(
         <div>
-            <h2>Change Vendor Totals</h2>
+            <h2>Change Expense Totals</h2>
             <select value={vendor} onChange={(e) => setVendor(e.target.value)}>
                  <option value="" disabled>Select a Vendor</option>
                 {vendors.map((vndr) => (
@@ -53,4 +53,4 @@ function ChangeVendorTotals(){
         </div>
     )
 }
-export default ChangeVendorTotals;
+export default ChangeExpenseTotals;

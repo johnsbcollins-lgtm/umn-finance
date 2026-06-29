@@ -2,3 +2,11 @@
     display: flex;
     gap: 20px;
 }
+.totals-container{
+    display: flex;
+    gap: 20px;
+}
+.delete-container{
+    display: flex;
+    gap: 20px;
+}
