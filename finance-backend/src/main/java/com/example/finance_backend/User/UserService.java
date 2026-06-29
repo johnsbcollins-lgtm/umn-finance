@@ -97,11 +97,11 @@ public class UserService {
         daysBetween = ChronoUnit.DAYS.between(date1, date2);
         long months = Math.abs(daysBetween/30);
         for(Map.Entry<String, StoreData> entry : storeDataMap.entrySet()){
-            expenseRepository.save(new Expense(entry.getKey(), entry.getValue().getExpenses(), owner));
-            incomeRepository.save(new Income(entry.getKey(), entry.getValue().getIncome(), owner));
+            expenseRepository.save(new Expense(entry.getKey(), entry.getValue().getExpenses(), owner, entry.getValue().getNumPurchases()));
+            incomeRepository.save(new Income(entry.getKey(), entry.getValue().getIncome(), owner, entry.getValue().getNumDeposits()));
         }
-        expenseRepository.save(new Expense("Other", other.getExpenses(), owner));
-        incomeRepository.save(new Income("Other", other.getIncome(), owner));
+        expenseRepository.save(new Expense("Other", other.getExpenses(), owner, other.getNumPurchases()));
+        incomeRepository.save(new Income("Other", other.getIncome(), owner, other.getNumDeposits()));
 
         timeRepository.save(new Time(months, date, owner));
 

@@ -14,6 +14,7 @@ public class Income {
 
     private String store;
     private double amount;
+    private int numDeposits;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -26,10 +27,11 @@ public class Income {
         this.amount = amount;
     }
 
-    public Income(String store, double amount, User owner) {
+    public Income(String store, double amount, User owner, int numDeposits) {
         this.store = store;
         this.amount = amount;
         this.owner = owner;
+        this.numDeposits = numDeposits;
     }
     //getters
     public Long getId() { return id;}

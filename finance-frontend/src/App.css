@@ -10,3 +10,11 @@
     display: flex;
     gap: 20px;
 }
+.change-totals-container{
+    display: flex;
+    gap: 20px;
+}
+.avg-monthly-container{
+    display: flex;
+    gap: 20px;
+}

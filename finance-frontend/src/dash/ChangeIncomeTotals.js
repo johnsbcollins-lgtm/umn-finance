@@ -28,4 +28,35 @@ function ChangeIncomeTotals(){
             }
 
 
+    return (
+        <div className="ChangeIncomeTotals">
+            <h2>Change Income Totals</h2>
+            <form onSubmit={handleChange}>
+                <label>
+                    Amount:
+                    <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                </label>
+                <label>
+                    Vendor:
+                    <select value={vendor} onChange={(e) => setVendor(e.target.value)}>
+                        {vendors.map(vendor => (
+                            <option key={vendor.value} value={vendor.value}>
+                                {vendor.label}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <label>
+                    Type:
+                    <select value={type} onChange={(e) => setType(e.target.value)}>
+                        <option value="positive">Positive</option>
+                        <option value="negative">Negative</option>
+                    </select>
+                </label>
+                <button type="submit">Update Income Totals</button>
+            </form>
+        </div>
+    );
 }
+
+export default ChangeIncomeTotals;

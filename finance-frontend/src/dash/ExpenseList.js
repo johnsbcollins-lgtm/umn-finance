@@ -16,7 +16,9 @@ function ExpenseList({ expenses, total }) {
     .sort((a, b) => storeOrder.indexOf(a.store) - storeOrder.indexOf(b.store))
     .map(expense => (
         <div key={expense.id}>
-            <p>{expense.store} - ${expense.amount.toFixed(2)} - {(expense.amount/total * 100).toFixed(2)}% of total</p>
+            <p>{expense.store} - ${expense.amount.toFixed(2)} - {(expense.amount/total * 
+              100).toFixed(2)}% of total - Average Expense per Purchase: ${expense.amount 
+              / expense.numPurchases || 0}</p>
         </div>
     ))
       }

@@ -7,7 +7,10 @@ import API_URL from '../config';
 import { authHeaders } from '../config';
 import { authHeadersForFormData } from '../config';
 import ChangeExpenseTotals from './ChangeExpenseTotals';
+import ChangeIncomeTotals from './ChangeIncomeTotals';
 import IncomeList from './IncomeList';
+import AvMonDeposit from './AvgMonDeposit';
+
 function Dashboard(){
 const [expenses, setExpenses] = useState([]);
 const [dates, setDates] = useState('');
@@ -85,17 +88,24 @@ useEffect(() => {
             <h2>Total Spending: ${totalExpense.toFixed(2)}</h2>
             <h2>Total Income: ${totalIncome.toFixed(2)}</h2>
          </div>
+         
+        <div className="avg-monthly-container">
+            <AvMonSpend total={totalExpense} months={months}/>
+            <AvMonDeposit total={totalIncome} months={months}/>
+        </div>
 
-         <AvMonSpend total={totalExpense} months={months}/>
+        <UploadCsv onUpload={fetchData}/>
 
-         <UploadCsv onUpload={fetchData}/>
-
-         <ChangeExpenseTotals/>
+        <div className="change-totals-container">
+            <ChangeExpenseTotals/>
+            <ChangeIncomeTotals/>
+        </div>
 
          <div className="delete-container">
               <button onClick={clearExpenses}>Clear All Expenses</button>
               <button onClick={clearIncome}>Clear All Income</button>
          </div>
+
         </div>
     );
   }
