@@ -37,7 +37,13 @@ public class ExpenseController {
         return ResponseEntity.ok("CSV uploaded successfully");
     } catch (Exception e) {
         return ResponseEntity.status(500).body("Upload failed: " + e.getMessage());
+        }
     }
+
+    @PostMapping("/change-vendor-totals")
+    public ResponseEntity<String> changeVendorTotals(@RequestParam String store, @RequestParam String type, @RequestParam double amount, Authentication auth) {
+        expenseService.changeVendorTotals(store, type, amount, auth.getName());
+        return ResponseEntity.ok("Vendor totals updated");
     }
 
     @GetMapping("/search")

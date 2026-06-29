@@ -110,6 +110,17 @@ public class ExpenseService {
         csvReader.close();
     }
 
+    public void changeVendorTotals(String store, String type, double amount, String email) {
+        User owner = getOwner(email);
+        Expense expense = expenseRepository.findFirstByStoreAndOwner(store, owner);
+        if(type.equals("positive")){
+            expense.setAmount(expense.getAmount() + amount);
+        }
+        else{
+            expense.setAmount(expense.getAmount() - amount);
+        }
+        expenseRepository.save(expense);
+    }
 
     public Expense getExpensesByStore(String store, String email) {
         User owner = getOwner(email);

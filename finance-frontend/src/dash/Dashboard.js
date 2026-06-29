@@ -6,6 +6,7 @@ import AvMonSpend from './AvMonSpend'
 import API_URL from '../config';
 import { authHeaders } from '../config';
 import { authHeadersForFormData } from '../config';
+import ChangeVendorTotals from './ChangeVendorTotals';
 function Dashboard(){
       //expenses is the variable, setExpenses modifies it
   const [expenses, setExpenses] = useState([]);
@@ -66,6 +67,7 @@ function Dashboard(){
          <h2>Total Spending: ${total.toFixed(2)}</h2>
          <AvMonSpend expenses={expenses} total = {total}/>
          <UploadCsv onUpload={reloadUpload}/>
+         <ChangeVendorTotals />
          <button onClick={clearDatabase}>Clear All Expenses</button>
         </div>
     );
