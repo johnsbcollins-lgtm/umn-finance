@@ -1,6 +1,8 @@
 package com.example.finance_backend.Authentication;
 
 import com.example.finance_backend.*;
+import com.example.finance_backend.User.User;
+import com.example.finance_backend.User.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;

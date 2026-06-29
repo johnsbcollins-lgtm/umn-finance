@@ -1,9 +1,9 @@
 package com.example.finance_backend.Finances;
 
+import com.example.finance_backend.User.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -15,29 +15,18 @@ public class ExpenseController {
 
     //final cause we don't want variable name to be reassigned
     private final ExpenseService expenseService;
+    private final UserService userService;
 
     //Spring Boot dependecy injection--still not 100% on what the benefits of this are
-    public ExpenseController(ExpenseService expenseService){
+    public ExpenseController(ExpenseService expenseService, UserService userService){
         this.expenseService = expenseService;
+        this.userService = userService;
     }
 
     //Get all expenses
     @GetMapping
     public List<Expense> getExpenses(Authentication auth){
         return expenseService.getExpenses(auth.getName());
-    }
-    @GetMapping("/date")
-    public String getDate(Authentication auth) {
-        return expenseService.getDate(auth.getName());
-    }
-    @PostMapping("/upload")
-    public ResponseEntity<String> uploadCSV(@RequestParam("file") MultipartFile file, Authentication auth){
-        try {
-        expenseService.parseAndSaveCSV(file, auth.getName());
-        return ResponseEntity.ok("CSV uploaded successfully");
-    } catch (Exception e) {
-        return ResponseEntity.status(500).body("Upload failed: " + e.getMessage());
-        }
     }
 
     @PostMapping("/change-vendor-totals")
@@ -49,11 +38,6 @@ public class ExpenseController {
     @GetMapping("/search")
     public Expense searchByStore(@RequestParam String store, Authentication auth) {
         return expenseService.getExpensesByStore(store, auth.getName());
-    }
-
-    @GetMapping("/months")
-    public ResponseEntity<Double> getMonths(Authentication auth) {
-        return ResponseEntity.ok(expenseService.getMonth(auth.getName()));
     }
 
     @DeleteMapping("/all")

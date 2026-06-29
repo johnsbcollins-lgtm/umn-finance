@@ -1,16 +1,15 @@
-package com.example.finance_backend.Finances;
+package com.example.finance_backend.Income;
 
 import com.example.finance_backend.User.User;
 import jakarta.persistence.*;
 
-
-//tells JPA this class maps to a database table
 @Entity
-@Table(name = "expenses")
-public class Expense {
+@Table(name = "income")
+public class Income {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "expense_seq")
-    @SequenceGenerator(name = "expense_seq", sequenceName = "expense_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "income_seq")
+    @SequenceGenerator(name = "income_seq", sequenceName = "income_seq", allocationSize = 1)
     private Long id;
 
     private String store;
@@ -20,14 +19,14 @@ public class Expense {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    public Expense(){}
+    public Income(){}
 
-    public Expense(String store, double amount) {
+    public Income(String store, double amount) {
         this.store = store;
         this.amount = amount;
     }
 
-    public Expense(String store, double amount, User owner) {
+    public Income(String store, double amount, User owner) {
         this.store = store;
         this.amount = amount;
         this.owner = owner;
@@ -43,4 +42,4 @@ public class Expense {
     public void setAmount(double amount) { this.amount = amount; }
     public void setOwner(User owner) { this.owner = owner; }
 
-    }
+}

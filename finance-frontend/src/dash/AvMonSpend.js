@@ -8,4 +8,5 @@ function AvMonSpend({ total, months }) {
     );
 }
 
+
 export default AvMonSpend;

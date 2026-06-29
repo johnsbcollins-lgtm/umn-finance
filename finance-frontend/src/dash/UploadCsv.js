@@ -13,7 +13,7 @@ function UploadCsv({ onUpload }){
         const formData = new FormData();
         formData.append('file', file);
 
-    fetch(`${API_URL}/expenses/upload`, {
+    fetch(`${API_URL}/user/upload`, {
         method: 'POST',
         body: formData,
         headers: authHeadersForFormData()

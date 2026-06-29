@@ -19,10 +19,9 @@ function ExpenseList({ expenses, total }) {
             <p>{expense.store} - ${expense.amount.toFixed(2)} - {(expense.amount/total * 100).toFixed(2)}% of total</p>
         </div>
     ))
-}
+      }
     </div>
-  );
-
+      );
 }
 
 export default ExpenseList;
