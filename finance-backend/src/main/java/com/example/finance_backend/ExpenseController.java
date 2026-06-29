@@ -41,8 +41,8 @@ public class ExpenseController {
     }
 
     @PostMapping("/change-vendor-totals")
-    public ResponseEntity<String> changeVendorTotals(@RequestParam String vendor, @RequestParam String type, @RequestParam double amount, Authentication auth) {
-        expenseService.changeVendorTotals(vendor, type, amount, auth.getName());
+    public ResponseEntity<String> changeVendorTotals(@RequestBody ChangeVendorRequest request, Authentication auth) {
+        expenseService.changeVendorTotals(request.vendor(), request.type(), request.amount(), auth.getName());
         return ResponseEntity.ok("Vendor totals updated");
     }
 

@@ -11,7 +11,7 @@ function ChangeVendorTotals(){
         {value: 'Royal', label: 'Royal'}, 
         {value: 'TopTen', label: 'TopTen'}, 
         {value: 'Chipotle', label: 'Chipotle'}, 
-        {value: 'McDonald’s', label: 'McDonald’s'}, 
+        {value: "McDonald’s", label: "McDonald’s"}, 
         {value: 'DoorDash', label: 'DoorDash'}, 
         {value: 'Uber', label: 'Uber'}, 
         {value: 'Other', label: 'Other'}];
