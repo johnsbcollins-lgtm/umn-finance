@@ -46,7 +46,7 @@ function Dashboard(){
     useEffect(() => {
       reloadUpload();
     }, []);
-    const total = expenses.slice(2).reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+    const total = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
 
     function clearDatabase() {
     fetch(`${API_URL}/expenses/all`, {
