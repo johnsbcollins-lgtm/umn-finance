@@ -2,19 +2,11 @@
     display: flex;
     gap: 20px;
 }
-.totals-container{
+.change-container{
     display: flex;
     gap: 20px;
 }
-.delete-container{
-    display: flex;
-    gap: 20px;
-}
-.change-totals-container{
-    display: flex;
-    gap: 20px;
-}
-.avg-monthly-container{
+.spending-summary-container{
     display: flex;
     gap: 20px;
 }

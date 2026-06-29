@@ -1,7 +1,6 @@
 import React from 'react';
 function ExpenseList({ expenses, total }) {
-  const storeOrder = ['KKs', 'Sals', 'Blarnes', 'Royal', 'TopTen', 'Chipotle', "McDonald’s", 
-      'DoorDash', 'Uber', 'Other'];
+  const storeOrder = [...new Set(expenses.map(e => e.store))];
   return (
     //header(<h2>)
     //curly braces means run javascript

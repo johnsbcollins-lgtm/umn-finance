@@ -88,27 +88,21 @@ useEffect(() => {
             <IncomeList income={income} total={totalIncome}/>
         </div>
 
-         <div className="totals-container">
+         <div className="spending-summary-container">
             <h2>Total Spending: ${totalExpense.toFixed(2)}</h2>
             <h2>Total Income: ${totalIncome.toFixed(2)}</h2>
-         </div>
-
-        <div className="avg-monthly-container">
             <AvMonSpend total={totalExpense} months={months}/>
             <AvMonDeposit total={totalIncome} months={months}/>
-        </div>
+         </div>
 
         <UploadCsv onUpload={fetchData}/>
 
-        <div className="change-totals-container">
-            <ChangeExpenseTotals/>
-            <ChangeIncomeTotals/>
-        </div>
-
-         <div className="delete-container">
-              <button onClick={clearExpenses}>Clear All Expenses</button>
+        <div className="change-container">
+            <ChangeExpenseTotals expenses={expenses}/>
+            <ChangeIncomeTotals income={income}/>
+             <button onClick={clearExpenses}>Clear All Expenses</button>
               <button onClick={clearIncome}>Clear All Income</button>
-         </div>
+        </div>
 
         </div>
     );

@@ -2,19 +2,11 @@ import React, { useState} from 'react';
 import API_URL from '../config';
 import { authHeaders } from '../config';
 
-function ChangeIncomeTotals(){
+function ChangeIncomeTotals({ income }){
     const [amount, setAmount] = useState('');
         const [vendor, setVendor] = useState('Other');
-        const vendors = [{value: 'KKs', label: 'KKs'}, 
-            {value: 'Sals', label: 'Sals'}, 
-            {value: 'Blarnes', label: 'Blarnes'}, 
-            {value: 'Royal', label: 'Royal'}, 
-            {value: 'TopTen', label: 'TopTen'}, 
-            {value: 'Chipotle', label: 'Chipotle'}, 
-            {value: "McDonald’s", label: "McDonald’s"}, 
-            {value: 'DoorDash', label: 'DoorDash'}, 
-            {value: 'Uber', label: 'Uber'}, 
-            {value: 'Other', label: 'Other'}];
+        const vendors = [...new Set(income.map(e => e.store))];
+
         const [type, setType] = useState('positive');
         function handleChange() {
                 fetch(`${API_URL}/income/change-vendor-totals`, {
@@ -31,30 +23,26 @@ function ChangeIncomeTotals(){
     return (
         <div className="ChangeIncomeTotals">
             <h2>Change Income Totals</h2>
-            <form onSubmit={handleChange}>
-                <label>
-                    Amount:
-                    <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
-                </label>
-                <label>
-                    Vendor:
-                    <select value={vendor} onChange={(e) => setVendor(e.target.value)}>
-                        {vendors.map(vendor => (
-                            <option key={vendor.value} value={vendor.value}>
-                                {vendor.label}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-                <label>
-                    Type:
-                    <select value={type} onChange={(e) => setType(e.target.value)}>
-                        <option value="positive">Positive</option>
-                        <option value="negative">Negative</option>
-                    </select>
-                </label>
-                <button type="submit">Update Income Totals</button>
-            </form>
+            <select value={vendor} onChange={(e) => setVendor(e.target.value)}> 
+                <option value="" disabled>Select a Vendor</option>
+                {vendors.map((vndr) => (
+                    <option key={vndr} value={vndr}>
+                        {vndr}
+                    </option>
+                ))}
+            </select>
+            <select value={type} onChange={(e) => setType(e.target.value)}>
+                 <option value="" disabled>Select a type</option>
+                <option value="positive">Positive Change</option>
+                <option value="negative">Negative Change</option>
+            </select>
+            <input
+                type="text"
+                placeholder="Amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+            />
+            <button onClick={handleChange}>Change Totals</button>
         </div>
     );
 }
