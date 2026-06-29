@@ -24,8 +24,8 @@ function ChangeExpenseTotals({ expenses }){
             <select value={vendor} onChange={(e) => setVendor(e.target.value)}>
                  <option value="" disabled>Select a Vendor</option>
                 {vendors.map((vndr) => (
-                    <option key={vndr.value} value={vndr.value}>
-                        {vndr.label}
+                    <option key={vndr} value={vndr}>
+                        {vndr}
                     </option>
                 ))}
             </select>
