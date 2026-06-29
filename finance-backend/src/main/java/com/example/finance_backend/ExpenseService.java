@@ -20,10 +20,12 @@ public class ExpenseService {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
     private final ExpenseRepository expenseRepository;
     private final UserRepository userRepository;
+    private final TimeRepository timeRepository;
 
-    public ExpenseService(ExpenseRepository expenseRepository, UserRepository userRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository, UserRepository userRepository, TimeRepository timeRepository) {
         this.expenseRepository = expenseRepository;
         this.userRepository = userRepository;
+        this.timeRepository = timeRepository;
     }
 
     public List<Expense> getExpenses(String email) {
@@ -93,8 +95,6 @@ public class ExpenseService {
         LocalDate date2 = LocalDate.parse(dayFinal, formatter);
         daysBetween = ChronoUnit.DAYS.between(date1, date2);
         long months = Math.abs(daysBetween/30);
-        expenseRepository.save(new Expense("Months", months, owner));
-        expenseRepository.save(new Expense(date, 0, owner));
         expenseRepository.save(new Expense("KKs", kkSpending, owner));
         expenseRepository.save(new Expense("Sals", salsSpending, owner));
         expenseRepository.save(new Expense("Blarnes", blarnesSpending, owner));
@@ -105,6 +105,7 @@ public class ExpenseService {
         expenseRepository.save(new Expense("DoorDash", doordash, owner));
         expenseRepository.save(new Expense("Uber", uber, owner));
         expenseRepository.save(new Expense("Other", genAmount + venmo, owner));
+        timeRepository.save(new Time(months, date, owner));
 
 
         csvReader.close();
@@ -135,16 +136,25 @@ public class ExpenseService {
     }
     public String getDate(String email){
         User owner = getOwner(email);
-        Expense dateExpense = expenseRepository.findFirstByStoreContainingAndOwner("to", owner);
-        if(dateExpense == null)
+        Time date = timeRepository.findFirstByOwner(owner);
+        if(date == null)
             return "";
         else
-            return dateExpense.getStore();
+            return date.getDate();
     }
 
     private User getOwner(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public double getMonths(String email) {
+        User owner = getOwner(email);
+        Time date = timeRepository.findFirstByOwner(owner);
+        if(date == null)
+            return 0;
+        else
+            return date.getMonths();
     }
 
     private int find(Map<String,Integer> map, String... keys) {

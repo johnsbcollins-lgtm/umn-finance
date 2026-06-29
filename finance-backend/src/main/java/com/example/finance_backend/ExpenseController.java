@@ -51,6 +51,11 @@ public class ExpenseController {
         return expenseService.getExpensesByStore(store, auth.getName());
     }
 
+    @GetMapping("/months")
+    public double getMonths(Authentication auth) {
+        return expenseService.getMonths(auth.getName());
+    }
+
     @DeleteMapping("/all")
     public ResponseEntity<String> deleteAllExpenses(Authentication auth) {
         expenseService.deleteAllExpenses(auth.getName());

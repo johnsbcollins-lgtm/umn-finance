@@ -8,7 +8,7 @@ function AvMonSpend({ expenses, total}) {
 
 
     useEffect(() => {
-        fetch(`${API_URL}/expenses/search?store=Months`,{
+        fetch(`${API_URL}/expenses/months`,{
             headers: authHeaders()
         })
             .then(response => response.json())
