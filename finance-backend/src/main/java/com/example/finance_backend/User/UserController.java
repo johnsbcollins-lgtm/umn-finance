@@ -26,6 +26,14 @@ public class UserController {
         return userService.getDate(auth.getName());
     }
 
+    @GetMapping("/common-words")
+    public void getCommonWords(@RequestParam("file") MultipartFile file, Authentication auth) {
+        try{
+            userService.findCommonWords(file, auth.getName());}
+        catch(Exception e){
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
     @GetMapping("/months")
     public ResponseEntity<Double> getMonths(Authentication auth) {
         return ResponseEntity.ok(userService.getMonth(auth.getName()));

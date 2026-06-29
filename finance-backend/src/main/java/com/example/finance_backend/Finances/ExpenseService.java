@@ -23,7 +23,9 @@ public class ExpenseService {
 
     public List<Expense> getExpenses(String email) {
         User owner = getOwner(email);
-        return expenseRepository.findAllByOwner(owner);
+        List<Expense> expense = expenseRepository.findAllByOwner(owner);
+        expense.removeIf(e -> e.getAmount() == 0);
+        return expense;
     }
 
     public void changeVendorTotals(String store, String type, double amount, String email) {

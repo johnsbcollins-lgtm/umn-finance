@@ -12,8 +12,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -31,15 +30,53 @@ public class UserService {
         this.timeRepository = timeRepository;
         this.incomeRepository = incomeRepository;
     }
+    public void findCommonWords(MultipartFile file, String email) throws Exception{
+        User owner = getOwner(email);
+        CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()));
+        String[] row;
+        row = csvReader.readNext();
+        Map<String, Integer> wordMap = new HashMap<>();
+        while((row = csvReader.readNext()) != null) {
+            String[] words = row[1].split(" ");
+            for (String word : words) {
+                if (!word.matches(".*\\d.*")) {
+                    if (wordMap.containsKey(word)) {
+                        wordMap.put(word, wordMap.get(word) + 1);
+                    } else {
+                        wordMap.put(word, 1);
+                    }
+                }
+            }
+        }
+        csvReader.close();
+        List<Map.Entry<String, Integer>> sorted = new ArrayList<>(wordMap.entrySet());
+        sorted.sort((a, b) -> b.getValue() - a.getValue()); // descending order
 
+        for (Map.Entry<String, Integer> entry : sorted) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
     public void parseAndSaveCSV(MultipartFile file, String email) throws Exception{
         User owner = getOwner(email);
         long daysBetween  = 1;
         StoreData other = new StoreData("Other");
-        Map<String, StoreData> storeDataMap = Map.of( "KKS", new StoreData("KOLLEGE"), "Venmo", new StoreData("VENMO"),
-                "Blarnes", new StoreData("BLARNEY"), "Royal", new StoreData("ROYAL"), "TopTen", new StoreData("LIQUOR"),
-                "Uber", new StoreData("UBER"), "Chipotle", new StoreData("CHIPOTLE"), "DoorDash", new StoreData("DOORDASH"),
-                "McDonald's", new StoreData("MCDONALDS"));
+        Map<String, StoreData> storeDataMap = Map.ofEntries(
+                Map.entry("KKS", new StoreData("KOLLEGE")),
+                Map.entry("Venmo", new StoreData("VENMO")),
+                Map.entry("Blarnes", new StoreData("BLARNEY")),
+                Map.entry("Royal", new StoreData("ROYAL")),
+                Map.entry("TopTen", new StoreData("LIQUOR")),
+                Map.entry("Uber", new StoreData("UBER")),
+                Map.entry("Chipotle", new StoreData("CHIPOTLE")),
+                Map.entry("DoorDash", new StoreData("DOORDASH")),
+                Map.entry("McDonald's", new StoreData("MCDONALDS")),
+                Map.entry("Payroll", new StoreData("PAYROLL")),
+                Map.entry("Account Transfer", new StoreData("ONLINE TRANSFER")),
+                Map.entry("Zelle", new StoreData("ZELLE")),
+                Map.entry("Lineleap", new StoreData("LINELEAP")),
+                Map.entry("Subscriptions", new StoreData("RECURRING")),
+                Map.entry("Vending Machines", new StoreData("CANTEEN"))
+        );
 
         CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()));
         String dayFinal, day1;

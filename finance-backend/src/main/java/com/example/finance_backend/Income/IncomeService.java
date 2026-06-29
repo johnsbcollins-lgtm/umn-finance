@@ -34,5 +34,9 @@ public class IncomeService {
         incomeRepository.save(income);
     }
 
-    public List<Income> getAllIncome(User owner){return incomeRepository.findAllByOwner(owner);}
+    public List<Income> getAllIncome(User owner){
+        List<Income> income = incomeRepository.findAllByOwner(owner);
+        income.removeIf(i -> i.getAmount() == 0);
+        return income;
+    }
 }

@@ -11,8 +11,9 @@ function IncomeList({ income, total }) {
     .map(income => (
         <div key={income.id}>
             <p>{income.store} : ${income.amount.toFixed(2)} - {(income.amount/total * 
-              100).toFixed(2)}% of total - Average Income per Deposit: ${income.amount 
-              / income.numDeposits || 0}
+              100).toFixed(2)}% of total - Number of Deposits: {income.numDeposits
+              } - Average Income per Deposit: ${income.amount 
+              / income.numDeposits.toFixed(2) || 0}
               </p>
         </div>
         ))
