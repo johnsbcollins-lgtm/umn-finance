@@ -154,7 +154,7 @@ public class ExpenseService {
         Time date = timeRepository.findFirstByOwner(owner);
         if(date == null) {
             System.out.println("Date: null");
-            return 0;
+            return 1;
         }
         else{
             System.out.println("Date: " + date.getMonths());
