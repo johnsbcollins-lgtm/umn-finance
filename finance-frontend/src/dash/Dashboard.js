@@ -22,7 +22,9 @@ const fetchData = () => {
         headers: authHeaders()
     })
     .then(response => response.json())
-    .then(data => setExpenses(data))
+    .then(data => {
+        console.log("expenses data:", data[0]);
+        setExpenses(data);})
     .catch(error => console.error("expenses error:", error));
 
     fetch(`${API_URL}/user/date`, {
@@ -42,7 +44,9 @@ const fetchData = () => {
         headers: authHeaders()
     })
     .then(response => response.json())
-    .then(data => setIncome(data))
+    .then(data => {
+        console.log("income data:", data[0]);
+        setIncome(data);})
     .catch(error => console.error("income error:", error))
 };
 
@@ -73,8 +77,6 @@ useEffect(() => {
     }
   const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
   const totalIncome = income.reduce((sum, income) => sum + parseFloat(income.amount), 0);
-    console.log("Expenses:", expenses);
-    console.log("Income:", income);
     
 
     return  (
