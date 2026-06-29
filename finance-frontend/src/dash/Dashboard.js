@@ -59,7 +59,7 @@ useEffect(() => {
         <h1> UMN Student Finance Dashboard {dates}</h1>
          <ExpenseList expenses={expenses} total = {total}/>
          <h2>Total Spending: ${total.toFixed(2)}</h2>
-         <AvMonSpend total = {total} months = {months}/>
+         <AvMonSpend total={total} months={months}/>
          <UploadCsv onUpload={fetchData}/>
          <ChangeVendorTotals />
          <button onClick={clearDatabase}>Clear All Expenses</button>
