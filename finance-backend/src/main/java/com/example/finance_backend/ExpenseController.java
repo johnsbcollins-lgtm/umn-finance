@@ -53,7 +53,7 @@ public class ExpenseController {
 
     @GetMapping("/months")
     public double getMonths(Authentication auth) {
-        return expenseService.getMonths(auth.getName());
+        return expenseService.getMonth(auth.getName());
     }
 
     @DeleteMapping("/all")

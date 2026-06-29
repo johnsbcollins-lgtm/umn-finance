@@ -148,7 +148,7 @@ public class ExpenseService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    public double getMonths(String email) {
+    public double getMonth(String email) {
         User owner = getOwner(email);
         Time date = timeRepository.findFirstByOwner(owner);
         if(date == null)
