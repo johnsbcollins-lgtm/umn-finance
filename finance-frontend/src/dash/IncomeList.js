@@ -10,7 +10,7 @@ function IncomeList({ income, total }) {
     .sort((a, b) => storeOrder.indexOf(a.store) - storeOrder.indexOf(b.store))
     .map(income => (
         <div key={income.id}>
-            <p>{income.store} - ${income.amount.toFixed(2)} - {(income.amount/total * 
+            <p>{income.store} : ${income.amount.toFixed(2)} - {(income.amount/total * 
               100).toFixed(2)}% of total - Average Income per Deposit: ${income.amount 
               / income.numDeposits || 0}
               </p>

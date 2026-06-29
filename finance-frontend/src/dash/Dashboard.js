@@ -73,7 +73,9 @@ useEffect(() => {
     }
   const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
   const totalIncome = income.reduce((sum, income) => sum + parseFloat(income.amount), 0);
-
+    console.log("Expenses:", expenses);
+    console.log("Income:", income);
+    
 
     return  (
       <div className="Dashboard">
@@ -88,7 +90,7 @@ useEffect(() => {
             <h2>Total Spending: ${totalExpense.toFixed(2)}</h2>
             <h2>Total Income: ${totalIncome.toFixed(2)}</h2>
          </div>
-         
+
         <div className="avg-monthly-container">
             <AvMonSpend total={totalExpense} months={months}/>
             <AvMonDeposit total={totalIncome} months={months}/>
