@@ -37,6 +37,12 @@ public class ExpenseService {
     public void parseAndSaveCSV(MultipartFile file, String email) throws Exception{
         User owner = getOwner(email);
         long daysBetween  = 1;
+        StoreData other = new StoreData("Other");
+        Map<String, StoreData> storeDataMap = Map.of( "KKS", new StoreData("KOLLEGE"), "Venmo", new StoreData("VENMO"),
+                "Blarnes", new StoreData("BLARNEY"), "Royal", new StoreData("ROYAL"), "TopTen", new StoreData("LIQUOR"),
+                "Uber", new StoreData("UBER"), "Chipotle", new StoreData("CHIPOTLE"), "DoorDash", new StoreData("DOORDASH"),
+                "McDonald's", new StoreData("MCDONALDS"));
+
         double kkSpending = 0, salsSpending = 0, blarnesSpending = 0, topSpending = 0, royalSpending = 0,
                 chipotle = 0, mcDonalds = 0, venmo = 0, genAmount = 0, uber = 0, doordash = 0;
         CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()));
@@ -56,11 +62,25 @@ public class ExpenseService {
         dayFinal = day1;
         //gotta add difference between spending and income later
         while((row = csvReader.readNext()) != null){
+            boolean otherCheck = true;
             dayFinal = row[dateIdx];
             String store = row[descIdx];
             double amount = Double.parseDouble(row[amountIdx]);
             amount = Math.round(amount * 100.0) / 100.0;
             store = store.toUpperCase();
+            for(Map.Entry<String, StoreData> entry : storeDataMap.entrySet()){
+                if(store.contains(entry.getValue().getVendor())){
+                    entry.getValue().setAmount(entry.getValue().getAmount() + amount);
+                    entry.getValue().setNumPurchases(entry.getValue().getNumPurchases() + 1);
+                    otherCheck = false;
+                    break;
+                }
+            }
+            if(otherCheck){
+                other.setAmount(other.getAmount() + amount);
+                other.setNumPurchases(other.getNumPurchases() + 1);
+            }
+            /*
             if(amount > 0 && store.contains("VENMO"))
                 venmo -= amount;
             //theres a better way of doing this fs
@@ -89,12 +109,19 @@ public class ExpenseService {
                 else
                     genAmount += amount;
             }
+
+             */
         }
         String date = " -- " + dayFinal + " to " + day1;
         LocalDate date1 = LocalDate.parse(day1, formatter);
         LocalDate date2 = LocalDate.parse(dayFinal, formatter);
         daysBetween = ChronoUnit.DAYS.between(date1, date2);
         long months = Math.abs(daysBetween/30);
+        for(Map.Entry<String, StoreData> entry : storeDataMap.entrySet()){
+            expenseRepository.save(new Expense(entry.getKey(), entry.getValue().getAmount(), owner));
+        }
+        expenseRepository.save(new Expense("Other", other.getAmount(), owner));
+        /*
         expenseRepository.save(new Expense("KKs", kkSpending, owner));
         expenseRepository.save(new Expense("Sals", salsSpending, owner));
         expenseRepository.save(new Expense("Blarnes", blarnesSpending, owner));
@@ -105,6 +132,8 @@ public class ExpenseService {
         expenseRepository.save(new Expense("DoorDash", doordash, owner));
         expenseRepository.save(new Expense("Uber", uber, owner));
         expenseRepository.save(new Expense("Other", genAmount + venmo, owner));
+
+         */
         timeRepository.save(new Time(months, date, owner));
 
 
