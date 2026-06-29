@@ -2,22 +2,8 @@ import React, { useState, useEffect } from 'react';
 import API_URL from '../config';
 import { authHeaders } from '../config';
 
-function AvMonSpend({ expenses, total}) {
+function AvMonSpend({ total, months }) {
 
-    const [months, setMonths] = useState(null);
-
-
-    useEffect(() => {
-        fetch(`${API_URL}/expenses/months`,{
-            headers: authHeaders()
-        })
-            .then(response => response.json())
-            .then(data => {
-                setMonths(data);
-                console.log("Months: ", data);
-            })
-            .catch(error => console.error(error));
-    }, []);
         
     return (
         <div>

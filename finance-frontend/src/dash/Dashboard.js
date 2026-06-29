@@ -8,45 +8,39 @@ import { authHeaders } from '../config';
 import { authHeadersForFormData } from '../config';
 import ChangeVendorTotals from './ChangeVendorTotals';
 function Dashboard(){
-      //expenses is the variable, setExpenses modifies it
-  const [expenses, setExpenses] = useState([]);
-  const [dates, setDates] = useState('')
-  //useEffect does stuff outside of rendering
-    //fetch talks to the backend to get expenses
-    //response is parsed to JSON
-    //and put in expenses
-  useEffect(() => {
-      console.log("Token:", localStorage.getItem('token'));
-      fetch(`${API_URL}/expenses`,{
-          headers: authHeaders()
-      })
-        .then(response => response.json())
-        .then(data => setExpenses(data));
-      fetch(`${API_URL}/expenses/date`,{
+const [expenses, setExpenses] = useState([]);
+const [dates, setDates] = useState('');
+const [months, setMonths] = useState(null);
+
+const fetchData = () => {
+    fetch(`${API_URL}/expenses`, {
         headers: authHeaders()
-      })
-        .then(response => response.text())
-        .then(data => setDates(data))
-    }, []);
+    })
+    .then(response => response.json())
+    .then(data => setExpenses(data))
+    .catch(error => console.error("expenses error:", error));
 
-    console.log("API :" + API_URL)
-    function reloadUpload() {
-      fetch(`${API_URL}/expenses`,{
-          headers: authHeaders()
-      })
-        .then(response => response.json())
-        .then(data => setExpenses(data));
-      fetch(`${API_URL}/expenses/date`,{
-          headers: authHeaders()
-      })
-          .then(response => response.text())
-          .then(data => setDates(data));
-    }
+    fetch(`${API_URL}/expenses/date`, {
+        headers: authHeaders()
+    })
+    .then(response => response.text())
+    .then(data => setDates(data))
+    .catch(error => console.error("date error:", error));
 
-    useEffect(() => {
-      reloadUpload();
-    }, []);
-    const total = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
+    fetch(`${API_URL}/expenses/months`, {
+        headers: authHeaders()
+    })
+    .then(response => response.json())
+    .then(data => setMonths(data))
+    .catch(error => console.error("months error:", error));
+};
+
+useEffect(() => {
+    fetchData();
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
     function clearDatabase() {
     fetch(`${API_URL}/expenses/all`, {
@@ -54,10 +48,10 @@ function Dashboard(){
         headers: authHeadersForFormData()
     })
     .then(response => response.text())
-    .then(message => {alert(message); reloadUpload();})
+    .then(message => {alert(message); fetchData();})
     .catch(error => console.error(error));
   }
-    
+  const total = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
 
 
     return  (
@@ -65,8 +59,8 @@ function Dashboard(){
         <h1> UMN Student Finance Dashboard {dates}</h1>
          <ExpenseList expenses={expenses} total = {total}/>
          <h2>Total Spending: ${total.toFixed(2)}</h2>
-         <AvMonSpend expenses={expenses} total = {total}/>
-         <UploadCsv onUpload={reloadUpload}/>
+         <AvMonSpend total = {total} months = {months}/>
+         <UploadCsv onUpload={fetchData}/>
          <ChangeVendorTotals />
          <button onClick={clearDatabase}>Clear All Expenses</button>
         </div>
