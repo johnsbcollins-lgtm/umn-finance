@@ -1,4 +1,4 @@
-package com.example.finance_backend;
+package com.example.finance_backend.Finances;
 
 public record ChangeVendorRequest(String vendor, String type, double amount) {
 }

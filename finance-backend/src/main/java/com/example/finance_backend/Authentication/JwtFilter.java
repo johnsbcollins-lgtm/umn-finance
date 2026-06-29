@@ -1,4 +1,4 @@
-package com.example.finance_backend;
+package com.example.finance_backend.Authentication;
 
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;

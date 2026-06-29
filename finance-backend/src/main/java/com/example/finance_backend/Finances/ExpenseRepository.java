@@ -1,6 +1,6 @@
-package com.example.finance_backend;
+package com.example.finance_backend.Finances;
 //talks to database
-import jakarta.transaction.Transactional;
+import com.example.finance_backend.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

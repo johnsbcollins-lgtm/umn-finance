@@ -1,5 +1,6 @@
-package com.example.finance_backend;
+package com.example.finance_backend.Finances;
 
+import com.example.finance_backend.User;
 import jakarta.persistence.*;
 
 

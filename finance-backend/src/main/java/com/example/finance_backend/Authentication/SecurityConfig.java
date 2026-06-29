@@ -1,4 +1,4 @@
-package com.example.finance_backend;
+package com.example.finance_backend.Authentication;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

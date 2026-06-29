@@ -1,4 +1,4 @@
-package com.example.finance_backend;
+package com.example.finance_backend.Finances;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.http.ResponseEntity;

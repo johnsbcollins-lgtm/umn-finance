@@ -1,5 +1,6 @@
-package com.example.finance_backend;
+package com.example.finance_backend.Authentication;
 
+import com.example.finance_backend.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;

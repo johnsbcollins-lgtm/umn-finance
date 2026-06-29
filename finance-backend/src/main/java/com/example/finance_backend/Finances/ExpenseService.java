@@ -1,5 +1,6 @@
-package com.example.finance_backend;
+package com.example.finance_backend.Finances;
 
+import com.example.finance_backend.*;
 import com.opencsv.CSVReader;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -43,8 +44,6 @@ public class ExpenseService {
                 "Uber", new StoreData("UBER"), "Chipotle", new StoreData("CHIPOTLE"), "DoorDash", new StoreData("DOORDASH"),
                 "McDonald's", new StoreData("MCDONALDS"));
 
-        double kkSpending = 0, salsSpending = 0, blarnesSpending = 0, topSpending = 0, royalSpending = 0,
-                chipotle = 0, mcDonalds = 0, venmo = 0, genAmount = 0, uber = 0, doordash = 0;
         CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()));
         String dayFinal, day1;
         String[] row;
@@ -70,47 +69,24 @@ public class ExpenseService {
             store = store.toUpperCase();
             for(Map.Entry<String, StoreData> entry : storeDataMap.entrySet()){
                 if(store.contains(entry.getValue().getVendor())){
-                    entry.getValue().setAmount(entry.getValue().getAmount() + amount);
-                    entry.getValue().setNumPurchases(entry.getValue().getNumPurchases() + 1);
+                    if (amount < 0) {
+                        amount = amount * -1;
+                        entry.getValue().setExpenses(entry.getValue().getExpenses() + amount);
+                        entry.getValue().setNumPurchases(entry.getValue().getNumPurchases() + 1);
+                    }
                     otherCheck = false;
                     break;
                 }
             }
-            if(otherCheck){
-                other.setAmount(other.getAmount() + amount);
-                other.setNumPurchases(other.getNumPurchases() + 1);
-            }
-            /*
-            if(amount > 0 && store.contains("VENMO"))
-                venmo -= amount;
-            //theres a better way of doing this fs
-            if(amount < 0){
-                amount = Math.abs(amount);
-                if (store.contains("KOLLEGE"))
-                    kkSpending += amount;
-                else if (store.contains("SALLYS")) {
-                    salsSpending += amount;
-                } else if (store.contains("BLARNEY")) {
-                    blarnesSpending += amount;
-                } else if (store.contains("ROYAL"))
-                    royalSpending += amount;
-                else if (store.contains("LIQUOR"))
-                    topSpending += amount;
-                else if (store.contains("CHIPOTLE"))
-                    chipotle += amount;
-                else if (store.contains("MCDONALDS"))
-                    mcDonalds += amount;
-                else if (store.contains("VENMO"))
-                    venmo += amount;
-                else if (store.contains("UBER"))
-                    uber += amount;
-                else if (store.contains("DOORDASH"))
-                    doordash += amount;
-                else
-                    genAmount += amount;
+            if(otherCheck) {
+                if (amount < 0) {
+                    amount = amount * -1;
+                    other.setExpenses(other.getExpenses() + amount);
+                    other.setNumPurchases(other.getNumPurchases() + 1);
+                }
             }
 
-             */
+
         }
         String date = " -- " + dayFinal + " to " + day1;
         LocalDate date1 = LocalDate.parse(day1, formatter);
@@ -118,24 +94,11 @@ public class ExpenseService {
         daysBetween = ChronoUnit.DAYS.between(date1, date2);
         long months = Math.abs(daysBetween/30);
         for(Map.Entry<String, StoreData> entry : storeDataMap.entrySet()){
-            expenseRepository.save(new Expense(entry.getKey(), entry.getValue().getAmount(), owner));
+            expenseRepository.save(new Expense(entry.getKey(), entry.getValue().getExpenses(), owner));
         }
-        expenseRepository.save(new Expense("Other", other.getAmount(), owner));
-        /*
-        expenseRepository.save(new Expense("KKs", kkSpending, owner));
-        expenseRepository.save(new Expense("Sals", salsSpending, owner));
-        expenseRepository.save(new Expense("Blarnes", blarnesSpending, owner));
-        expenseRepository.save(new Expense("Royal", royalSpending, owner));
-        expenseRepository.save(new Expense("TopTen", topSpending, owner));
-        expenseRepository.save(new Expense("Chipotle", chipotle, owner));
-        expenseRepository.save(new Expense("McDonald's", mcDonalds, owner));
-        expenseRepository.save(new Expense("DoorDash", doordash, owner));
-        expenseRepository.save(new Expense("Uber", uber, owner));
-        expenseRepository.save(new Expense("Other", genAmount + venmo, owner));
+        expenseRepository.save(new Expense("Other", other.getExpenses(), owner));
 
-         */
         timeRepository.save(new Time(months, date, owner));
-
 
         csvReader.close();
     }
