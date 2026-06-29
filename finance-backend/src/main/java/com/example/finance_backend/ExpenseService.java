@@ -133,6 +133,7 @@ public class ExpenseService {
         User owner = getOwner(email);
         System.out.println("ExpenseService1");
         expenseRepository.deleteAllByOwner(owner);
+        timeRepository.deleteAllByOwner(owner);
     }
     public String getDate(String email){
         User owner = getOwner(email);
@@ -151,10 +152,14 @@ public class ExpenseService {
     public double getMonth(String email) {
         User owner = getOwner(email);
         Time date = timeRepository.findFirstByOwner(owner);
-        if(date == null)
+        if(date == null) {
+            System.out.println("Date: null");
             return 0;
-        else
+        }
+        else{
+            System.out.println("Date: " + date.getMonths());
             return date.getMonths();
+        }
     }
 
     private int find(Map<String,Integer> map, String... keys) {

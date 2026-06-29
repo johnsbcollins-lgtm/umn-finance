@@ -52,8 +52,8 @@ public class ExpenseController {
     }
 
     @GetMapping("/months")
-    public double getMonths(Authentication auth) {
-        return expenseService.getMonth(auth.getName());
+    public ResponseEntity<Double> getMonths(Authentication auth) {
+        return ResponseEntity.ok(expenseService.getMonth(auth.getName()));
     }
 
     @DeleteMapping("/all")
