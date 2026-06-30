@@ -3,6 +3,7 @@ import HomePage from "./auth/HomePage";
 import Dashboard from "./dash/Dashboard";
 import LoginPage from "./auth/LoginPage";
 import RegisterPage from "./auth/RegisterPage";
+import VerifyPage from "./auth/VerifyPage";
 function App(){
 
   return (
@@ -12,6 +13,7 @@ function App(){
         <Route path="/auth" element={<HomePage/>} />
         <Route path="/auth/login" element={<LoginPage/>} />
         <Route path="/auth/register" element={<RegisterPage/>} />
+        <Route path="/auth/verify" element={<VerifyPage/>} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>

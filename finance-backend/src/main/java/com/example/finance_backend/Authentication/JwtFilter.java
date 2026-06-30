@@ -1,11 +1,13 @@
 package com.example.finance_backend.Authentication;
 
+import com.example.finance_backend.Accounts.EmailService;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import io.jsonwebtoken.Claims;
@@ -21,6 +23,10 @@ public class JwtFilter extends OncePerRequestFilter {
     @Value("${jwt.secret}")
     private String secret;
 
+    private final EmailService emailService;
+    public JwtFilter(EmailService emailService) {
+        this.emailService = emailService;
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -56,6 +62,9 @@ public class JwtFilter extends OncePerRequestFilter {
                             claims.getSubject(), null, new ArrayList<>()
                     );
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            if(!emailService.emailAuth(authentication.getName())){
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Verify your email first");
+            }
 
             chain.doFilter(request, response);
         } catch (Exception e) {

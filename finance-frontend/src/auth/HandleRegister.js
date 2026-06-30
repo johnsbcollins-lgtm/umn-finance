@@ -24,7 +24,7 @@ function HandleRegister(){
         .then(data => {localStorage.setItem('token', data.token)})
         .then(() => {
                 console.log(localStorage.getItem('token'));
-                navigate('/dashboard');
+                navigate(`/auth/verify?userEmail=${email}`);
             })
         .catch(error => {console.error(error);});
     }
