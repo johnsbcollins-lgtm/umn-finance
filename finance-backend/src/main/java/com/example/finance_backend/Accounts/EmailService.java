@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
-    @Value("${spring.mail.url}")
+    @Value("${app.frontend.ur1}")
     private String url;
 
     private final UserService userService;
