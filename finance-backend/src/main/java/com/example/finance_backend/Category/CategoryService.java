@@ -7,6 +7,7 @@ import com.example.finance_backend.Income.Income;
 import com.example.finance_backend.Income.IncomeRepository;
 import com.example.finance_backend.User.User;
 import com.example.finance_backend.User.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class CategoryService {
         return total;
     }
 
+    @Transactional
     public void deleteCategories(User owner){
         categoryRepository.deleteAllByOwner(owner);
     }

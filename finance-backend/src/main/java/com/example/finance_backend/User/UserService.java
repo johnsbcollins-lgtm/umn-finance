@@ -192,10 +192,12 @@ public class UserService {
                 if(e.getStore().equals(i.getStore())){
                     if(e.getAmount() > i.getAmount()){
                         e.setAmount(e.getAmount() - i.getAmount());
+                        expenseRepository.save(e);
                         incomeRepository.delete(i);
                     }
                     else{
                         i.setAmount(i.getAmount() - e.getAmount());
+                        incomeRepository.save(i);
                         expenseRepository.delete(e);
                     }
                 }
