@@ -42,7 +42,7 @@ public class EmailService {
             body.put("to", List.of(to));
             body.put("subject", "Email Verification");
             body.put("text", "Please click the following link to verify your email:\n\n"
-                    + url + "/auth/verify?token=" + token);
+                    + url + "/auth/verify/email?token=" + token);
 
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
