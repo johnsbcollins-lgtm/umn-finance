@@ -48,7 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/verify")
-    public ResponseEntity<?> verify(@RequestParam String token) {
+    public ResponseEntity<?> verify(@RequestParam("token") String token) {
         User user = userRepository.findByEmailToken(token)
                 .orElseThrow(() -> new RuntimeException("Invalid token"));
 
@@ -58,7 +58,7 @@ public class AuthController {
         return ResponseEntity.ok("Email verified");
     }
     @PostMapping("/resend-verification")
-    public ResponseEntity<?> resendVerification(@RequestParam String email) {
+    public ResponseEntity<?> resendVerification(@RequestParam("email") String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if (user.isVerified()) {

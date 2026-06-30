@@ -6,12 +6,11 @@ function HandleVerification() {
     const token = searchParams.get('token');
     const navigate = useNavigate();
     function verifyEmail() {
-        fetch(`${API_URL}/auth/verify`,{
+        fetch(`${API_URL}/auth/verify?token=${token}`,{
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token })
             })
         .then(response => {
+            console.log("token:", token);
             if(!response.ok){
                 throw new Error("Failed to verify email");
             }

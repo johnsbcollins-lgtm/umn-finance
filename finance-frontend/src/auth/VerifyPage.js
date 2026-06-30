@@ -6,10 +6,8 @@ function VerifyPage() {
     const email = searchParams.get('userEmail');
    
     function ResendVerification(){
-            fetch(`${API_URL}/auth/resend-verification`,{
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
+            fetch(`${API_URL}/auth/resend-verification?email=${email}`,{
+                method: 'POST'
             })
             .then(response => {
                 if(!response.ok){
