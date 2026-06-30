@@ -7,7 +7,7 @@ function VerifyPage() {
     const token = searchParams.get('token');
     const navigate = useNavigate();
     console.log("VerifyPage email:", email);
-    console.log("VerifyPage token:", token);\
+    console.log("VerifyPage token:", token);
 
     function ResendVerification(){
             fetch(`${API_URL}/auth/resend-verification`,{
