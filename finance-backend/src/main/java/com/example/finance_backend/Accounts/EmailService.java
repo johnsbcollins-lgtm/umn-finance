@@ -19,7 +19,7 @@ public class EmailService {
     @Value("${resend.api.key}")
     private String apiKey;
 
-    @Value("${app.frontend.url}")
+    @Value("${app.frontend.ur1}")
     private String url;
 
     private final UserService userService;
