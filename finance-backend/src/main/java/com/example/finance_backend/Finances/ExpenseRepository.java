@@ -11,5 +11,6 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long>{
     List<Expense> findAllByOwner(User owner);
     Expense findFirstByStoreAndOwner(String store, User owner);
     void deleteAllByOwner(User owner);
+    void delete(Expense expense);
 }
 
