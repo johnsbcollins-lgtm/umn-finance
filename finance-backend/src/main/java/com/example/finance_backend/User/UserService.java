@@ -1,5 +1,6 @@
 package com.example.finance_backend.User;
 
+import com.example.finance_backend.Category.CategoryService;
 import com.example.finance_backend.Finances.Expense;
 import com.example.finance_backend.Finances.ExpenseRepository;
 
@@ -22,13 +23,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final TimeRepository timeRepository;
     private final IncomeRepository incomeRepository;
+    private final CategoryService categoryService;
 
     public UserService(ExpenseRepository expenseRepository, UserRepository userRepository,
-                       TimeRepository timeRepository, IncomeRepository incomeRepository){
+                       TimeRepository timeRepository, IncomeRepository incomeRepository, CategoryService categoryService){
         this.expenseRepository = expenseRepository;
         this.userRepository = userRepository;
         this.timeRepository = timeRepository;
         this.incomeRepository = incomeRepository;
+        this.categoryService = categoryService;
     }
     public void findCommonWords(MultipartFile file, String email) throws Exception{
         User owner = getOwner(email);
@@ -61,11 +64,11 @@ public class UserService {
         long daysBetween  = 1;
         StoreData other = new StoreData("Other");
         Map<String, StoreData> storeDataMap = Map.ofEntries(
-                Map.entry("KKS", new StoreData("KOLLEGE")),
+                Map.entry("KKS", new StoreData("KOLLEGE", "social")),
                 Map.entry("Venmo", new StoreData("VENMO")),
-                Map.entry("Blarnes", new StoreData("BLARNEY")),
-                Map.entry("Royal", new StoreData("ROYAL")),
-                Map.entry("TopTen", new StoreData("LIQUOR")),
+                Map.entry("Blarnes", new StoreData("BLARNEY", "social")),
+                Map.entry("Royal", new StoreData("ROYAL", "personal")),
+                Map.entry("TopTen", new StoreData("LIQUOR", "social")),
                 Map.entry("Uber", new StoreData("UBER")),
                 Map.entry("Chipotle", new StoreData("CHIPOTLE", "food")),
                 Map.entry("DoorDash", new StoreData("DOORDASH", "food")),
@@ -73,11 +76,11 @@ public class UserService {
                 Map.entry("Payroll", new StoreData("PAYROLL")),
                 Map.entry("Account Transfer", new StoreData("ONLINE TRANSFER")),
                 Map.entry("Zelle", new StoreData("ZELLE")),
-                Map.entry("Lineleap", new StoreData("LINELEAP")),
+                Map.entry("Lineleap", new StoreData("LINELEAP", "social")),
                 Map.entry("Subscriptions", new StoreData("RECURRING")),
                 Map.entry("Vending Machines", new StoreData("CANTEEN")),
                 Map.entry("Target", new StoreData("TARGET")),
-                Map.entry("Sals", new StoreData("SALLYS")),
+                Map.entry("Sals", new StoreData("SALLYS", "social")),
                 Map.entry("Canes", new StoreData("CANES", "food")),
                 Map.entry("Qdoba", new StoreData("QDOBA", "food")),
                 Map.entry("DP Dough", new StoreData("DP DOUGH", "food")),
@@ -141,27 +144,16 @@ public class UserService {
         LocalDate date2 = LocalDate.parse(dayFinal, formatter);
         daysBetween = ChronoUnit.DAYS.between(date1, date2);
         long months = Math.abs(daysBetween/30);
-        expenseRepository.save(new Expense("Fast Food", 0, owner, 0));
         for(Map.Entry<String, StoreData> entry : storeDataMap.entrySet()){
-            if(entry.getValue().getCategory().equals("food")) {
-                Expense expense = expenseRepository.findFirstByStoreAndOwner("Fast Food", owner);
-                expense.setAmount(expense.getAmount() + entry.getValue().getExpenses());
-                expense.setNumPurchases(expense.getNumPurchases() + entry.getValue().getNumPurchases());
-                expenseRepository.save(expense);
-            }
-            else{
                 expenseRepository.save(new Expense(entry.getKey(), entry.getValue().getExpenses(),
-                        owner, entry.getValue().getNumPurchases()));
+                        owner, entry.getValue().getNumPurchases(), entry.getValue().getCategory()));
                 incomeRepository.save(new Income(entry.getKey(), entry.getValue().getIncome(),
                         owner, entry.getValue().getNumDeposits()));
-            }
         }
         expenseRepository.save(new Expense("Other", other.getExpenses(), owner, other.getNumPurchases()));
         incomeRepository.save(new Income("Other", other.getIncome(), owner, other.getNumDeposits()));
-
         timeRepository.save(new Time(months, date, owner));
-
-
+        categoryService.handleCategories(owner);
         csvReader.close();
     }
 
@@ -191,7 +183,6 @@ public class UserService {
             return date.getMonths();
         }
     }
-
 
     private int find(Map<String,Integer> map, String... keys) {
         for (String k : keys) {

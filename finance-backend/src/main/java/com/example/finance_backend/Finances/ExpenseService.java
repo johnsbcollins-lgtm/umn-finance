@@ -53,7 +53,7 @@ public class ExpenseService {
         timeRepository.deleteAllByOwner(owner);
     }
 
-    private User getOwner(String email) {
+    public User getOwner(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }

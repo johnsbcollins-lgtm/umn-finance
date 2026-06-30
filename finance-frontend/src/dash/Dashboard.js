@@ -10,12 +10,14 @@ import ChangeExpenseTotals from './ChangeExpenseTotals';
 import ChangeIncomeTotals from './ChangeIncomeTotals';
 import IncomeList from './IncomeList';
 import AvMonDeposit from './AvgMonDeposit';
+import CategoriesList from './CategoriesList';
 
 function Dashboard(){
 const [expenses, setExpenses] = useState([]);
 const [dates, setDates] = useState('');
 const [months, setMonths] = useState(null);
 const [income, setIncome] = useState([]);
+const [categories, setCategories] = useState([]);
 
 const fetchData = () => {
     fetch(`${API_URL}/expenses`, {
@@ -48,6 +50,16 @@ const fetchData = () => {
         console.log("income data:", data[0]);
         setIncome(data);})
     .catch(error => console.error("income error:", error))
+
+    fetch(`${API_URL}/category`, {
+        headers: authHeaders()
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("category data:", data[0]);
+        setCategories(data);
+    })
+    .catch(error => console.error("category error:", error));
 };
 
 useEffect(() => {
@@ -85,7 +97,11 @@ useEffect(() => {
 
          <div className="lists-container">
             <ExpenseList expenses={expenses} total={totalExpense}/>
-            <IncomeList income={income} total={totalIncome}/>
+            <div>
+                <IncomeList income={income} total={totalIncome}/>
+                <CategoriesList categories={categories}/>
+            </div>
+        
         </div>
 
          <div className="spending-summary-container">

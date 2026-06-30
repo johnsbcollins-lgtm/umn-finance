@@ -16,6 +16,7 @@ public class Expense {
     private String store;
     private double amount;
     private int numPurchases;
+    private String category;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -33,6 +34,15 @@ public class Expense {
         this.amount = amount;
         this.owner = owner;
         this.numPurchases = numPurchases;
+        this.category = null;
+    }
+
+    public Expense(String store, double amount, User owner, int numPurchases, String category) {
+        this.store = store;
+        this.amount = amount;
+        this.owner = owner;
+        this.category = category;
+        this.numPurchases = numPurchases;
     }
     //getters
     public Long getId() { return id;}
@@ -40,7 +50,9 @@ public class Expense {
     public double getAmount() {return amount;}
     public User getOwner() { return owner;}
     public int getNumPurchases() {return numPurchases;}
+    public String getCategory() {return category;}
 
+    public void setCategory(String category) {this.category = category;}
     public void setNumPurchases(int numPurchases) {this.numPurchases = numPurchases;}
     public void setId(Long id) { this.id = id; }
     public void setStore(String store) { this.store = store; }
