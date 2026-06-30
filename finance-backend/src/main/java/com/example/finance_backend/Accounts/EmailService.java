@@ -26,6 +26,7 @@ public class EmailService {
     public void sendVerificationEmail(String to, String token){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
+        message.setFrom("noreply@gopherbudget.com");
         message.setSubject("Email Verification");
         message.setText("Please click on the following link to verify your email: \n\n" +
                 url + "/auth/verify?token=" + token);
