@@ -2,13 +2,10 @@ package com.example.finance_backend.Accounts;
 
 import com.example.finance_backend.User.User;
 import com.example.finance_backend.User.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,12 +23,10 @@ public class EmailService {
     private String url;
 
     private final UserService userService;
-    private final JavaMailSender mailSender;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public EmailService(UserService userService, JavaMailSender mailSender) {
+    public EmailService(UserService userService) {
         this.userService = userService;
-        this.mailSender = mailSender;
     }
 
 
@@ -41,7 +36,7 @@ public class EmailService {
             headers.set("Authorization", "Bearer " + apiKey);
             headers.setContentType(MediaType.APPLICATION_JSON);
             System.out.println("Got past headers");
-            
+
             Map<String, Object> body = new HashMap<>();
             body.put("from", "noreply@gopherbudget.com");
             body.put("to", List.of(to));
@@ -67,14 +62,5 @@ public class EmailService {
     public boolean emailAuth(String email){
         User user = userService.getOwner(email);
         return user.isVerified();
-    }
-    public void testEmail(){
-
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setTo("john.sb.collins@gmail.com");
-        message.setSubject("Test Email");
-        message.setText("This is a test email sent from the backend.");
-        mailSender.send(message);
     }
 }
