@@ -43,6 +43,7 @@ public class AuthController {
         userRepository.save(user);
         String token = jwtService.generateToken(user);
         emailService.sendVerificationEmail(user.getEmail(), user.getEmailToken());
+        System.out.println("Email sent");
         return ResponseEntity.ok(new AuthResponse(token));
     }
 

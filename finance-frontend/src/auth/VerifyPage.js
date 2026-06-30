@@ -8,7 +8,6 @@ function VerifyPage() {
     const navigate = useNavigate();
 
     function ResendVerification(){
-        if(token === null){
             fetch(`${API_URL}/auth/resend-verification`,{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -21,14 +20,13 @@ function VerifyPage() {
                 return response.json();
             })
             .catch(error => {console.error(error);});
-        }
     }
     function verifyEmail() {
         if(token !== null){
             fetch(`${API_URL}/auth/verify`,{
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                Body: JSON.stringify({ token })
+                body: JSON.stringify({ token })
                 })
             .then(response => {
                 if(!response.ok){

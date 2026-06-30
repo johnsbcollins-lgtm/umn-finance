@@ -24,13 +24,17 @@ public class EmailService {
 
 
     public void sendVerificationEmail(String to, String token){
+        System.out.println("Sending email");
+        System.out.println("url: " + url + "/auth/verify?token=" + token + "");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setFrom("noreply@gopherbudget.com");
         message.setSubject("Email Verification");
         message.setText("Please click on the following link to verify your email: \n\n" +
                 url + "/auth/verify?token=" + token);
+        System.out.println("probably no issue with message");
         mailSender.send(message);
+        System.out.println("Probably no issue with mailSender");
     }
 
     public boolean emailAuth(String email){
