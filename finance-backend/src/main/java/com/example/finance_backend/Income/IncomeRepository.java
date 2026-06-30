@@ -8,5 +8,6 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     List<Income> findAllByOwner(User owner);
     void deleteAllByOwner(User owner);
     Income findFirstByStoreAndOwner(String store, User owner);
+    void delete(Income income);
 
 }

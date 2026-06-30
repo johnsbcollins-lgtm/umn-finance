@@ -18,6 +18,7 @@ const [dates, setDates] = useState('');
 const [months, setMonths] = useState(null);
 const [income, setIncome] = useState([]);
 const [categories, setCategories] = useState([]);
+const [categoryTotals, setCategoryTotals] = useState(0);
 
 const fetchData = () => {
     fetch(`${API_URL}/expenses`, {
@@ -60,6 +61,12 @@ const fetchData = () => {
         setCategories(data);
     })
     .catch(error => console.error("category error:", error));
+    fetch(`${API_URL}/category/total`, {
+        headers: authHeaders()
+    })
+    .then(response => response.json())
+    .then(data => {setCategoryTotals(data);})
+    .catch(error => console.error("category total error:", error));
 };
 
 useEffect(() => {
@@ -87,6 +94,15 @@ useEffect(() => {
     .then(message => {alert(message); fetchData();})
     .catch(error => console.error(error));
     }
+    function clearCategories() {
+    fetch(`${API_URL}/category/all`, {
+        method: 'DELETE',
+        headers: authHeadersForFormData()
+    })
+    .then(response => response.text())
+    .then(message => {alert(message); fetchData();})
+    .catch(error => console.error(error));
+    }
   const totalExpense = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
   const totalIncome = income.reduce((sum, income) => sum + parseFloat(income.amount), 0);
     
@@ -100,6 +116,7 @@ useEffect(() => {
             <div>
                 <IncomeList income={income} total={totalIncome}/>
                 <CategoriesList categories={categories}/>
+                <h2>Category Totals: ${categoryTotals.toFixed(2)}</h2>
             </div>
         
         </div>
@@ -118,6 +135,7 @@ useEffect(() => {
             <ChangeIncomeTotals income={income}/>
              <button onClick={clearExpenses}>Clear All Expenses</button>
               <button onClick={clearIncome}>Clear All Income</button>
+              <button onClick={clearCategories}>Clear All Categories</button>
         </div>
 
         </div>

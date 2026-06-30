@@ -65,21 +65,21 @@ public class UserService {
         StoreData other = new StoreData("Other");
         Map<String, StoreData> storeDataMap = Map.ofEntries(
                 Map.entry("KKS", new StoreData("KOLLEGE", "social")),
-                Map.entry("Venmo", new StoreData("VENMO")),
+                Map.entry("Venmo", new StoreData("VENMO", "money")),
                 Map.entry("Blarnes", new StoreData("BLARNEY", "social")),
                 Map.entry("Royal", new StoreData("ROYAL", "personal")),
                 Map.entry("TopTen", new StoreData("LIQUOR", "social")),
-                Map.entry("Uber", new StoreData("UBER")),
+                Map.entry("Uber", new StoreData("UBER", "personal")),
                 Map.entry("Chipotle", new StoreData("CHIPOTLE", "food")),
                 Map.entry("DoorDash", new StoreData("DOORDASH", "food")),
                 Map.entry("McDonald's", new StoreData("MCDONALDS", "food")),
-                Map.entry("Payroll", new StoreData("PAYROLL")),
-                Map.entry("Account Transfer", new StoreData("ONLINE TRANSFER")),
-                Map.entry("Zelle", new StoreData("ZELLE")),
+                Map.entry("Payroll", new StoreData("PAYROLL", "money")),
+                Map.entry("Account Transfer", new StoreData("ONLINE TRANSFER", "money")),
+                Map.entry("Zelle", new StoreData("ZELLE", "money")),
                 Map.entry("Lineleap", new StoreData("LINELEAP", "social")),
-                Map.entry("Subscriptions", new StoreData("RECURRING")),
-                Map.entry("Vending Machines", new StoreData("CANTEEN")),
-                Map.entry("Target", new StoreData("TARGET")),
+                Map.entry("Subscriptions", new StoreData("RECURRING", "subscriptions")),
+                Map.entry("Vending Machines", new StoreData("CANTEEN", "food")),
+                Map.entry("Target", new StoreData("TARGET", "personal")),
                 Map.entry("Sals", new StoreData("SALLYS", "social")),
                 Map.entry("Canes", new StoreData("CANES", "food")),
                 Map.entry("Qdoba", new StoreData("QDOBA", "food")),
@@ -150,9 +150,10 @@ public class UserService {
                 incomeRepository.save(new Income(entry.getKey(), entry.getValue().getIncome(),
                         owner, entry.getValue().getNumDeposits()));
         }
-        expenseRepository.save(new Expense("Other", other.getExpenses(), owner, other.getNumPurchases()));
-        incomeRepository.save(new Income("Other", other.getIncome(), owner, other.getNumDeposits()));
+        expenseRepository.save(new Expense("Other", other.getExpenses(), owner, other.getNumPurchases(), "other"));
+        incomeRepository.save(new Income("Other", other.getIncome(), owner, other.getNumDeposits(), "other"));
         timeRepository.save(new Time(months, date, owner));
+        handleDupes(owner);
         categoryService.handleCategories(owner);
         csvReader.close();
     }
@@ -181,6 +182,24 @@ public class UserService {
         else{
             System.out.println("Date: " + date.getMonths());
             return date.getMonths();
+        }
+    }
+    private void handleDupes(User owner){
+        List<Expense> expenses = expenseRepository.findAllByOwner(owner);
+        List<Income> income = incomeRepository.findAllByOwner(owner);
+        for(Expense e : expenses){
+            for(Income i : income){
+                if(e.getStore().equals(i.getStore())){
+                    if(e.getAmount() > i.getAmount()){
+                        e.setAmount(e.getAmount() - i.getAmount());
+                        incomeRepository.delete(i);
+                    }
+                    else{
+                        i.setAmount(i.getAmount() - e.getAmount());
+                        expenseRepository.delete(e);
+                    }
+                }
+            }
         }
     }
 

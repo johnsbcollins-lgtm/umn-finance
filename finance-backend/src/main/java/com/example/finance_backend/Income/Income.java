@@ -15,6 +15,7 @@ public class Income {
     private String store;
     private double amount;
     private int numDeposits;
+    private String category;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -33,13 +34,23 @@ public class Income {
         this.owner = owner;
         this.numDeposits = numDeposits;
     }
+
+    public Income(String store, double amount, User owner, int numDeposits, String category) {
+        this.store = store;
+        this.amount = amount;
+        this.owner = owner;
+        this.numDeposits = numDeposits;
+        this.category = category;
+    }
     //getters
     public Long getId() { return id;}
     public String getStore() { return store;}
     public double getAmount() {return amount;}
     public User getOwner() { return owner;}
     public int getNumDeposits() {return numDeposits;}
+    public String getCategory() {return category;}
 
+    public void setCategory(String category) {this.category = category;}
     public void setNumDeposits(int numDeposits) {this.numDeposits = numDeposits;}
     public void setId(Long id) { this.id = id; }
     public void setStore(String store) { this.store = store; }

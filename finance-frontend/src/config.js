@@ -1,4 +1,4 @@
-export const API_URL = 'https://umn-finance-production.up.railway.app'
+export const API_URL = 'http://localhost:8081'
 /*
 const localUrl ='http://localhost:8081'
  apiUrl = 'https://umn-finance-production.up.railway.app'

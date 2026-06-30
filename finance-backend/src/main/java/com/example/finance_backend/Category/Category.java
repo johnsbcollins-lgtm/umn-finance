@@ -33,7 +33,9 @@ public class Category {
     public String getCategory() { return category;}
     public double getAmount() {return amount;}
     public User getOwner() { return owner;}
+    public int getNumPurchases() {return numPurchases;}
 
+    public void setNumPurchases(int numPurchases) {this.numPurchases = numPurchases;}
     public void setId(Long id) { this.id = id; }
     public void setCategory(String category) { this.category = category; }
     public void setAmount(double amount) { this.amount = amount; }

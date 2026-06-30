@@ -7,9 +7,7 @@ function CategoriesList({ categories }) {
                 .sort((a, b) => category.indexOf(a.category) - category.indexOf(b.category))
                 .map(category => (
                     <div key={category.id}>
-                        <p>{category.category} : ${category.amount.toFixed(2)} - # of Purchases: {category.numPurchases
-                            } - Avg. Expense: ${(category.amount 
-                            / category.numPurchases).toFixed(2) || 0}</p>
+                        <p>{category.category} : ${category.amount.toFixed(2)}</p>
                     </div>
                 ))}
         </div>
