@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_URL } from '../config';
 function HandleVerification() {
@@ -6,7 +6,7 @@ function HandleVerification() {
     const token = searchParams.get('token');
     const navigate = useNavigate();
 
-    useEffect(() => {
+    function verifyEmail() {
         fetch(`${API_URL}/auth/verify?token=${token}`,{
             method: 'POST',
             })
@@ -22,10 +22,10 @@ function HandleVerification() {
         })
         .catch(error => {console.error(error);});
             
-    }, [token, navigate]);
+    }
     return(
         <div>
-            <h2>Loading...</h2>
+            <button onClick={verifyEmail}>Go to Dashboard</button>
         </div>
     )
 }
