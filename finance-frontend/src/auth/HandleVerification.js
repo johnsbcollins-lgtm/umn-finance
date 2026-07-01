@@ -11,21 +11,18 @@ function HandleVerification() {
             method: 'POST',
             })
         .then(response => {
-            console.log("token:", token);
+            console.log(token);
             if(!response.ok){
                 throw new Error("Failed to verify email");
             }
             return response.json();
-        })
-        .then(() => {
-            navigate('/dashboard');
         })
         .catch(error => {console.error(error);});
             
     }
     return(
         <div>
-            <button onClick={verifyEmail}>Go to Dashboard</button>
+            <button onClick={verifyEmail.then(() => navigate('/dashboard'))}>Go to Dashboard</button>
         </div>
     )
 }
