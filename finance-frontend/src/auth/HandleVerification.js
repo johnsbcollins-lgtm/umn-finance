@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+
 import { API_URL } from '../config';
 function HandleVerification() {
     const [searchParams] = useSearchParams();
@@ -15,7 +16,6 @@ function HandleVerification() {
             if(!response.ok){
                 throw new Error("Failed to verify email");
             }
-            return response.json();
         })
         .then(() => navigate('/dashboard'))
         .catch(error => {console.error(error);});
