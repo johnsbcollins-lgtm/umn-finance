@@ -17,12 +17,13 @@ function HandleVerification() {
             }
             return response.json();
         })
+        .then(() => navigate('/dashboard'))
         .catch(error => {console.error(error);});
             
     }
     return(
         <div>
-            <button onClick={verifyEmail.then(() => navigate('/dashboard'))}>Go to Dashboard</button>
+            <button onClick={verifyEmail}>Go to Dashboard</button>
         </div>
     )
 }
