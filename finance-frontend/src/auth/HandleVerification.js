@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { API_URL } from '../config';
 function HandleVerification() {
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
     const navigate = useNavigate();
-    function verifyEmail() {
+
+    useEffect(() => {
         fetch(`${API_URL}/auth/verify?token=${token}`,{
             method: 'POST',
             })
@@ -21,11 +22,10 @@ function HandleVerification() {
         })
         .catch(error => {console.error(error);});
             
-    }
+    }, [token, navigate]);
     return(
         <div>
             <h2>Loading...</h2>
-            {verifyEmail()}
         </div>
     )
 }
